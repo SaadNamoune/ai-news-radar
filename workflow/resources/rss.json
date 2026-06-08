@@ -4,7 +4,7 @@
     },
     "categories": [
         {
-            "category": "🤖 AI & LLMs",
+            "category": "AI & Large Language Models",
             "items": [
                 {
                     "title": "Hacker News — AI",
@@ -51,7 +51,7 @@
             ]
         },
         {
-            "category": "🧬 CS Research & Papers",
+            "category": "CS Research & Papers",
             "items": [
                 {
                     "title": "Hugging Face Daily Papers",
@@ -100,7 +100,7 @@
             ]
         },
         {
-            "category": "🏛️ Research Labs",
+            "category": "Research Laboratories",
             "items": [
                 {
                     "title": "DeepMind Blog",
@@ -140,7 +140,7 @@
             ]
         },
         {
-            "category": "🔐 Cybersecurity",
+            "category": "Cybersecurity",
             "items": [
                 {
                     "title": "Hacker News — Security",
@@ -173,7 +173,7 @@
             ]
         },
         {
-            "category": "⚙️ Systems & Engineering",
+            "category": "Systems & Engineering",
             "items": [
                 {
                     "title": "Facebook Engineering",
@@ -220,7 +220,7 @@
             ]
         },
         {
-            "category": "💾 Open Source & Code",
+            "category": "Open Source & Software",
             "items": [
                 {
                     "title": "GitHub Trending — Python",
