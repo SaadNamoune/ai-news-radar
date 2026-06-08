@@ -5,7 +5,7 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import { defineConfig, passthroughImageService } from "astro/config";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel/static";
 import markdoc from "@astrojs/markdoc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,7 +18,7 @@ import rehypeExternalLinks from "rehype-external-links";
 // https://astro.build/config
 export default defineConfig(
   /** @type {import('astro').AstroUserConfig} */ {
-    output: "server",
+    output: "static",
     site: "https://ai-news-radar.vercel.app",
     server: {
       // port: 4321, // The port to run the dev server on.
