@@ -6,30 +6,102 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <nav class="nav">
-    <div class="footer__content">
-      <span>
-        &copy; {year} <a href={SITE.githubUrl} title="GitHub">{SITE.author}</a>
-        &mdash; <span class="footer__desc">{SITE.description}</span>
-      </span>
-      <span class="footer__theme">
-        <ModeLabel client:load /> mode &middot; built with <a href="https://astro.build/">Astro</a>
-      </span>
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <span class="footer__name">{SITE.name}</span>
+      <p class="footer__bio">
+        Daily AI, cybersecurity &amp; CS research digest — curated by Mistral AI.
+      </p>
     </div>
-  </nav>
+
+    <div class="footer__links">
+      <a href="/blog" class="footer__link">Blog</a>
+      <a href="/tags" class="footer__link">Tags</a>
+      <a href="/about" class="footer__link">About</a>
+      <a href={SITE.githubUrl} class="footer__link" target="_blank" rel="noopener">GitHub</a>
+      <a href="/rss.xml" class="footer__link">RSS</a>
+    </div>
+  </div>
+
+  <div class="footer__meta">
+    <span>&copy; {year} <a href={SITE.githubUrl} class="footer__meta-link">{SITE.author}</a></span>
+    <span class="footer__dot">·</span>
+    <span><ModeLabel client:load /> mode</span>
+    <span class="footer__dot">·</span>
+    <span>Built with <a href="https://astro.build/" class="footer__meta-link" target="_blank" rel="noopener">Astro</a></span>
+  </div>
 </footer>
 
 <style>
   .footer {
-    @apply py-6 border-t;
+    @apply pt-8 pb-6 mt-16;
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
   }
-  .footer__content {
-    @apply flex flex-wrap justify-between gap-2 text-sm text-gray-400 dark:text-gray-500;
+  html.dark .footer {
+    border-top-color: rgba(255, 255, 255, 0.05);
   }
-  .footer__desc {
-    @apply hidden sm:inline;
+
+  .footer__inner {
+    @apply flex flex-col sm:flex-row justify-between gap-6 mb-6;
   }
-  .footer__theme {
-    @apply text-gray-400 dark:text-gray-600;
+  .footer__brand {
+    @apply flex flex-col gap-1;
+  }
+  .footer__name {
+    @apply font-black text-base;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .footer__bio {
+    @apply text-xs;
+    color: #9ca3af;
+    max-width: 32ch;
+  }
+  html.dark .footer__bio {
+    color: #4b5563;
+  }
+
+  .footer__links {
+    @apply flex flex-wrap gap-4;
+  }
+  .footer__link {
+    @apply text-sm font-medium transition-colors duration-150;
+    color: #9ca3af;
+    text-decoration: none;
+  }
+  html.dark .footer__link {
+    color: #4b5563;
+  }
+  .footer__link:hover {
+    color: #6366f1;
+  }
+  html.dark .footer__link:hover {
+    color: #818cf8;
+  }
+
+  .footer__meta {
+    @apply flex items-center flex-wrap gap-2 text-xs;
+    color: #d1d5db;
+  }
+  html.dark .footer__meta {
+    color: #374151;
+  }
+  .footer__meta-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .footer__meta-link:hover {
+    color: #6366f1;
+  }
+  html.dark .footer__meta-link:hover {
+    color: #818cf8;
+  }
+  .footer__dot {
+    color: #e5e7eb;
+  }
+  html.dark .footer__dot {
+    color: #1f2937;
   }
 </style>

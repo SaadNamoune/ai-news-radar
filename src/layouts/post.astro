@@ -1,18 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import Icon from "astro-icon";
-import {
-  SITE,
-  USE_POST_IMG_OVERLAY,
-  USE_AUTHOR_CARD,
-  USE_SUBSCRIPTION,
-  USE_VIEW_STATS,
-} from "$/config";
+import { SITE } from "$/config";
 import MainLayout from "$/components/MainLayout.astro";
 import BaseHead from "$/components/BaseHead.astro";
 import Prose from "$/components/Prose.astro";
-import PostStats from "$/components/PostStats.svelte";
-import EditUrl from "$/components/EditLink.astro";
 
 interface Props {
   meta?: {
@@ -27,21 +18,13 @@ interface Props {
 }
 const { content, meta } = Astro.props;
 
-const AUTHOR_NAME = content.author
-  ? content.author
-  : SITE?.author
-    ? SITE?.author
-    : "Author";
-const AUTHOR_TWITTER = content.authorTwitter
-  ? content.authorTwitter
-  : SITE?.authorTwitter
-    ? SITE?.authorTwitter
-    : "";
-const AUTHOR_AVATAR = content.authorImage
-  ? content.authorImage
-  : SITE?.authorImage
-    ? SITE?.authorImage
-    : "";
+const formattedDate = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+}).format(new Date(content.date));
+
+const tags = content.tags || [];
 ---
 
 <!doctype html>
@@ -53,132 +36,122 @@ const AUTHOR_AVATAR = content.authorImage
     />
   </head>
   <MainLayout>
-    <div class="post__header">
-      <h1 class="post__title">{content.title}</h1>
-      <div class="post__tags">
-        {
-          content.tags.length > 0 &&
-            content.tags.map((tag) => (
-              <a class="post__tag" href={`/tags/${tag}`} title={tag}>
-                {tag}
-              </a>
-            ))
-        }
-      </div>
-      <br />
-      <br />
-      <h5 class={`post__desc ${AUTHOR_AVATAR ? "flex flex-row gap-2" : ""}`}>
-        <div class={AUTHOR_AVATAR ? "flex flex-col border-l-2 pl-2" : ""}>
-          <span class="post__date">
-            <!-- post creation/updation data -->
-            {
-              new Intl.DateTimeFormat("en-US", { dateStyle: "full" }).format(
-                new Date(content.date)
-              )
-            }
-          </span>
-          <span class="post__stats">
-            {USE_VIEW_STATS && ` | `}
-            {
-              USE_VIEW_STATS && (
-                <>
-                  <Icon class="w-5 h-5 inline-block" pack="mdi" name="eye" />
-                  <PostStats slug={meta?.slug} client:load />
-                </>
-              )
-            }
-            <!-- | <Icon class="w-5 h-5 inline-block" pack="mdi" name="clock" /> 2 mins -->
-          </span>
+    <article>
+      <!-- Article header -->
+      <div class="post-header">
+        <div class="post-header__meta">
+          <time class="post-header__date" datetime={content.date}>
+            {formattedDate}
+          </time>
+          <span class="post-header__sep" aria-hidden="true">·</span>
+          <span class="post-header__author">{SITE.author}</span>
         </div>
-      </h5>
-    </div>
-    {
-      content.image ? (
-        USE_POST_IMG_OVERLAY ? (
-          <>
-            <div class="img__outer">
-              <img src={content.image} alt={content.title} />
-              <div class="img_gradient" />
+
+        <h1 class="post-header__title">{content.title}</h1>
+
+        {
+          tags.length > 0 && (
+            <div class="post-header__tags">
+              {tags.map((tag) => (
+                <a class="post-header__tag" href={`/tags/${tag}`} title={tag}>
+                  {tag}
+                </a>
+              ))}
             </div>
-            <br />
-          </>
-        ) : (
-          <>
-            <img class="img__outer" src={content.image} alt={content.title} />
-            <br />
-          </>
-        )
-      ) : (
-        ""
-      )
-    }
-    <Prose>
-      <slot />
-    </Prose>
+          )
+        }
+
+        <div class="post-header__divider" aria-hidden="true"></div>
+      </div>
+
+      {content.image && (
+        <div class="post-cover">
+          <img src={content.image} alt={content.title} />
+        </div>
+      )}
+
+      <Prose>
+        <slot />
+      </Prose>
+    </article>
   </MainLayout>
-  <style>
-    .post__header {
-      @apply py-4 mb-1 text-left;
-    }
-    .post__title {
-      @apply text-4xl font-extrabold text-theme-primary dark:text-theme-dark-primary;
-    }
-    .post__desc {
-      @apply text-gray-500 dark:text-gray-100 flex flex-none text-left;
-    }
-    .post__author {
-      @apply no-underline dark:text-white hover:text-theme-primary;
-    }
-    .post__date,
-    .post__stats {
-      @apply text-gray-500;
-    }
-    .post__tags {
-      @apply inline-flex gap-2 flex-wrap;
-    }
-    .post__tag {
-      @apply text-gray-400 hover:text-theme-primary dark:hover:text-theme-dark-primary;
-    }
-
-    .avatar {
-      @apply w-12 h-12 rounded-full object-cover p-1 border-2 border-solid border-theme-dark-primary dark:border-theme-primary;
-    }
-    .avatar--lg {
-      @apply w-32 h-32;
-    }
-
-    .img__outer {
-      @apply relative rounded-lg shadow-xl overflow-hidden;
-    }
-    .img_gradient {
-      @apply absolute z-10 w-full bottom-0 left-0 h-full bg-gradient-to-tr from-theme-primary dark:from-theme-dark-primary;
-    }
-
-    .author-card {
-      @apply text-gray-500 dark:text-gray-100 flex flex-row gap-4 justify-start text-left;
-    }
-    .author-card__meta {
-      @apply border-l pl-4;
-    }
-    .author-card__author {
-      @apply text-2xl mb-1;
-    }
-    .author-card__bio {
-      @apply text-gray-400;
-    }
-
-    .subscription-form {
-      @apply w-4/6 mt-2 flex flex-row rounded-lg overflow-hidden shadow-lg;
-    }
-    .subscription-form input {
-      @apply flex-grow border-0 text-theme-accent-gray-dark;
-    }
-    .subscription-form button,
-    .button {
-      @apply px-4 py-2 uppercase font-bold text-white bg-gradient-to-tr from-theme-primary to-theme-dark-secondary dark:from-theme-dark-secondary dark:to-theme-primary;
-    }
-    .author-card__follow-btn {
-      @apply rounded-md shadow-md shadow-theme-dark-secondary dark:shadow-theme-primary hover:shadow-theme-secondary hover:dark:shadow-theme-secondary hover:shadow-lg transition-all;
-    }
-  </style>
 </html>
+
+<style>
+  /* Article header */
+  .post-header {
+    @apply pt-6 pb-2 mb-2;
+  }
+  .post-header__meta {
+    @apply flex items-center gap-2 text-sm mb-3;
+    color: #9ca3af;
+  }
+  html.dark .post-header__meta {
+    color: #6b7280;
+  }
+  .post-header__date {
+    font-variant-numeric: tabular-nums;
+  }
+  .post-header__sep {
+    color: #d1d5db;
+  }
+  html.dark .post-header__sep {
+    color: #374151;
+  }
+  .post-header__author {
+    font-weight: 500;
+    color: #6b7280;
+  }
+  html.dark .post-header__author {
+    color: #9ca3af;
+  }
+
+  .post-header__title {
+    @apply text-3xl md:text-4xl font-black leading-tight mb-4 tracking-tight;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .post-header__tags {
+    @apply flex flex-wrap gap-2 mb-4;
+  }
+  .post-header__tag {
+    @apply px-2.5 py-1 rounded-full text-xs font-semibold no-underline transition-colors duration-150;
+    background: rgba(99, 102, 241, 0.08);
+    color: #6366f1;
+    border: 1px solid rgba(99, 102, 241, 0.15);
+  }
+  html.dark .post-header__tag {
+    background: rgba(129, 140, 248, 0.1);
+    color: #a5b4fc;
+    border-color: rgba(129, 140, 248, 0.18);
+  }
+  .post-header__tag:hover {
+    background: rgba(99, 102, 241, 0.15);
+  }
+  html.dark .post-header__tag:hover {
+    background: rgba(129, 140, 248, 0.18);
+  }
+
+  .post-header__divider {
+    @apply mt-2 rounded-full;
+    height: 2px;
+    background: linear-gradient(90deg, #6366f1, #a855f7, transparent);
+    max-width: 240px;
+    opacity: 0.5;
+  }
+
+  /* Cover image */
+  .post-cover {
+    @apply mb-6 rounded-2xl overflow-hidden;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+  }
+  html.dark .post-cover {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  }
+  .post-cover img {
+    @apply w-full object-cover max-h-80;
+  }
+</style>

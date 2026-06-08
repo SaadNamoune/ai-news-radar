@@ -6,76 +6,111 @@ import SearchBtn from "./SearchBtn.svelte";
 ---
 
 <header class="header">
-  <div class="header__logo">
-    <a href="/" class="logo-mark" title={SITE.name}>
-      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
-        <rect width="80" height="80" rx="16" fill="currentColor" class="logo-bg"/>
-        <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle"
-          font-family="system-ui,sans-serif" font-weight="800" font-size="32"
+  <a href="/" class="header__brand" title={SITE.name}>
+    <div class="logo-box">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6366f1"/>
+            <stop offset="1" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <rect width="40" height="40" rx="10" fill="url(#logoGrad)"/>
+        <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
+          font-family="system-ui,sans-serif" font-weight="800" font-size="16"
           fill="white">AI</text>
       </svg>
-    </a>
-  </div>
-  <div class="header__meta flex-1">
-    <h2 class="header__title">
-      <a href="/">{SITE.name}</a>
-    </h2>
-    <div class="header__meta-more flex">
-      <p class="header__desc">
-        {SITE.description}
-      </p>
-      <nav class="header__nav flex">
-        <ul class="header__ref-list">
-          <li>
-            <SearchBtn client:visible />
-          </li>
-          <li>
-            <a href={SITE.githubUrl} title={`${SITE.name} on GitHub`}>
-              <SvgIcon>
-                <path
-                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-                ></path>
-              </SvgIcon>
-            </a>
-          </li>
-          <li>
-            <a href="/rss.xml" title="RSS Feed">
-              <SvgIcon>
-                <path d="M4 11a9 9 0 0 1 9 9"></path>
-                <path d="M4 4a16 16 0 0 1 16 16"></path>
-                <circle cx="5" cy="19" r="1"></circle>
-              </SvgIcon>
-            </a>
-          </li>
-          <li>
-            <ModeSwitcherBtn client:visible />
-          </li>
-        </ul>
-      </nav>
+      <span class="logo-pulse" aria-hidden="true"></span>
     </div>
+    <div class="header__brand-text">
+      <span class="header__site-name">{SITE.name}</span>
+      <span class="header__tagline">Daily AI & CS digest · Mistral-powered</span>
+    </div>
+  </a>
+
+  <div class="header__actions">
+    <SearchBtn client:visible />
+    <a href={SITE.githubUrl} title={`${SITE.name} on GitHub`} class="action-btn">
+      <SvgIcon>
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+      </SvgIcon>
+    </a>
+    <a href="/rss.xml" title="RSS Feed" class="action-btn">
+      <SvgIcon>
+        <path d="M4 11a9 9 0 0 1 9 9"></path>
+        <path d="M4 4a16 16 0 0 1 16 16"></path>
+        <circle cx="5" cy="19" r="1"></circle>
+      </SvgIcon>
+    </a>
+    <ModeSwitcherBtn client:visible />
   </div>
 </header>
 
 <style>
   .header {
-    @apply flex gap-4 border-b py-3;
+    @apply flex items-center justify-between py-5 gap-4;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
   }
-  .logo-mark {
-    @apply flex items-center justify-center w-16 h-16;
+  html.dark .header {
+    border-bottom-color: rgba(255, 255, 255, 0.06);
   }
-  .logo-svg {
-    @apply w-16 h-16 text-theme-primary dark:text-theme-dark-primary;
+
+  .header__brand {
+    @apply flex items-center gap-3 flex-1 min-w-0 no-underline;
   }
-  .logo-bg {
-    @apply opacity-90;
+
+  .logo-box {
+    @apply relative flex-none;
   }
-  .header__title {
-    @apply text-4xl font-extrabold md:text-5xl text-theme-primary dark:text-theme-dark-primary;
+  .logo-box svg {
+    @apply w-10 h-10;
   }
-  .header__desc {
-    @apply text-xl flex-1 dark:text-gray-200;
+  .logo-pulse {
+    @apply absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full;
+    background: #818cf8;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    animation: pulse-glow 2.5s ease-in-out infinite;
   }
-  .header__ref-list {
-    @apply flex gap-3 text-gray-400;
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25); }
+    50% { box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.08); }
+  }
+
+  .header__brand-text {
+    @apply flex flex-col min-w-0;
+  }
+  .header__site-name {
+    @apply text-xl font-black leading-tight;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header__tagline {
+    @apply text-xs leading-tight truncate;
+    color: #9ca3af;
+  }
+  html.dark .header__tagline {
+    color: #6b7280;
+  }
+
+  .header__actions {
+    @apply flex items-center gap-0.5;
+    color: #9ca3af;
+  }
+  html.dark .header__actions {
+    color: #6b7280;
+  }
+
+  .action-btn {
+    @apply p-2 rounded-lg transition-colors duration-150;
+  }
+  .action-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #374151;
+  }
+  html.dark .action-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #d1d5db;
   }
 </style>
