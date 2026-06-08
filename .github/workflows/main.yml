@@ -11,6 +11,9 @@ jobs:
   generate-daily-digest:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     env:
       AI_PROVIDER: openai
       GPT_MODEL_NAME: mistral-small-latest
