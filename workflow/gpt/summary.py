@@ -1,3 +1,8 @@
+"""
+summary.py — GPT/Gemini article scoring and summarization
+Author: Saad Namoune
+"""
+
 import json
 import os
 
@@ -9,26 +14,24 @@ from workflow.gpt.prompt import multi_content_prompt
 
 def evaluate_article_with_gpt(articles):
     article_links = [article.link for article in articles]
-    logger.info(f"start summary: {article_links}")
+    logger.info(f"Scoring {len(article_links)} articles...")
 
-    prompt = multi_content_prompt
     gpt_input = ""
     max_input_tokens = int(os.getenv("GPT_MAX_INPUT_TOKENS", 8000))
-    for idx, item in enumerate(articles):
+    for item in articles:
         content = item.summary[:max_input_tokens]
         gpt_input += f"```link: {item.link}, content:{content}```.\n"
 
-    ai_provider = os.environ.get("AI_PROVIDER")
+    ai_provider = os.environ.get("AI_PROVIDER", "gemini")
     if ai_provider == "openai":
-        response = request_openai(prompt=prompt, content=gpt_input)
+        response = request_openai(prompt=multi_content_prompt, content=gpt_input)
     else:
-        response = request_gemini(prompt=prompt, content=gpt_input)
+        response = request_gemini(prompt=multi_content_prompt, content=gpt_input)
+
     response_list = transform2json(response)
-    # check format
     if not response_list:
         return []
     if not isinstance(response_list, list):
-        # 有时单个内容未按数组格式输出
         response_list = [response_list]
 
     evaluate_list = [item for item in response_list if item.get("title") and item.get("link")]
@@ -36,112 +39,70 @@ def evaluate_article_with_gpt(articles):
 
 
 def request_gemini(prompt, content):
-    import google.generativeai as genai
-    input_text = f"{prompt}: {content}"
+    """Call Gemini API using the new google-genai SDK (gemini-1.5-flash)."""
+    from google import genai
+    from google.genai import types
 
     api_key = os.environ.get("GPT_API_KEY")
     if not api_key:
-        raise ValueError("gemini key is empty")
+        raise ValueError("GPT_API_KEY environment variable is not set.")
 
-    genai.configure(api_key=api_key)
-    # Set up the model
-    generation_config = genai.GenerationConfig(temperature=0.2)
+    model_name = os.getenv("GPT_MODEL_NAME", "gemini-2.5-flash")
+    client = genai.Client(api_key=api_key)
 
-    safety_settings = [
-        {
-            "category": "HARM_CATEGORY_HARASSMENT",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-            "category": "HARM_CATEGORY_HATE_SPEECH",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-    ]
-    model = genai.GenerativeModel(model_name='gemini-pro',
-                                  generation_config=generation_config,
-                                  safety_settings=safety_settings)
+    input_text = f"{prompt}\n\n{content}"
 
     try:
-        response = model.generate_content([input_text])
-        logger.info(response.text)
-        return response.text
+        response = client.models.generate_content(
+            model=model_name,
+            contents=input_text,
+            config=types.GenerateContentConfig(
+                temperature=0.2,
+                max_output_tokens=4096,
+            ),
+        )
+        result = response.text
+        logger.info(f"Gemini response ({len(result)} chars): {result[:200]}...")
+        return result
     except Exception as e:
-        logger.error(f"request gemini failed: {e}, skip")
+        logger.error(f"Gemini API call failed: {e}")
         return None
 
 
 def request_openai(prompt, content):
+    """Call OpenAI API (gpt-4o-mini by default)."""
     try:
         api_key = os.getenv("GPT_API_KEY")
-        base_url = os.getenv("GPT_BASE_URL")
+        base_url = os.getenv("GPT_BASE_URL") or None
         model = os.getenv("GPT_MODEL_NAME", "gpt-4o-mini")
-        # logger.debug(f"request openai: {api_key}, {base_url}")
+
         client = OpenAI(api_key=api_key, base_url=base_url)
-        messages = [
-            {
-                "role": "system",
-                "content": prompt
-            },
-            {
-                "role": "user",
-                "content": content
-            }
-        ]
         chat_completion = client.chat.completions.create(
-            messages=messages,
-            model=model
+            model=model,
+            messages=[
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": content},
+            ],
         )
-        r = chat_completion.choices[0].message.content
-        logger.debug(f"input messages: {messages}, model: {model}, response: {r}")
-        return r
+        result = chat_completion.choices[0].message.content
+        logger.debug(f"OpenAI response: {result[:200]}...")
+        return result
     except Exception as e:
-        logger.error(f"request openai failed: {e}")
+        logger.error(f"OpenAI API call failed: {e}")
         return ""
 
 
 def transform2json(result):
+    """Parse GPT/Gemini JSON response into a Python list."""
     if not result:
         return None
-    format_json = None
-    # 去掉首尾两行就是完整json内容
-    text = result.removeprefix("```json")
-    text = text.removesuffix("```")
-    # 有时输出格式可能不完全符合json
+    text = result.strip()
+    text = text.removeprefix("```json").removeprefix("```").removesuffix("```").strip()
     try:
-        format_json = json.loads(text)
+        return json.loads(text)
     except Exception as e:
-        logger.error(f"input text: {text}, error: {e}")
-        format_json = eval(text)
-    finally:
-        return format_json
-
-
-if __name__ == '__main__':
-    from workflow.article.rss import gen_article_from
-    from dotenv import load_dotenv
-
-    pwd_path = os.path.abspath(os.path.dirname(__file__))
-
-    load_dotenv(dotenv_path=os.path.join(pwd_path, '../../.env'), override=True)
-    g = os.getenv("GPT_BASE_URL")
-    a = os.getenv("GPT_API_KEY")
-    c = os.getenv("GPT_MODEL_NAME")
-    logger.info(f"envs: {g}, {a}, {c}")
-
-    rss_item = {
-        "link": "https://github.com/groue/GRDB.swift",
-        "title": "grdb.swift"
-    }
-
-    article = gen_article_from(rss_item=rss_item, rss_type="code")
-    logger.info(f"article: {article.summary}, {article.title}")
-    res = evaluate_article_with_gpt([article])
-    print(res)
+        logger.error(f"JSON parse failed: {e} — input: {text[:300]}")
+        try:
+            return eval(text)
+        except Exception:
+            return None

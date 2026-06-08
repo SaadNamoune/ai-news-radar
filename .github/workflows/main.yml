@@ -13,7 +13,7 @@ jobs:
 
     env:
       AI_PROVIDER: openai
-      GPT_MODEL_NAME: gpt-4o-mini
+      GPT_MODEL_NAME: gemini-2.5-flash
       GPT_BASE_URL: ${{ secrets.GPT_BASE_URL }}
       GPT_API_KEY: ${{ secrets.GPT_API_KEY }}
       MAX_ARTICLE_NUMS: 20
