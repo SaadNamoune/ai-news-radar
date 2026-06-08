@@ -1,190 +1,138 @@
-# Daily AI Digest
+# AI News Radar
 
-> An automated AI-powered daily news pipeline — curates, summarizes, and scores the best AI, tech, cybersecurity, and open-source articles every day using GPT-4.
+**Automated daily digest of AI, cybersecurity, and open-source news — powered by Mistral AI**
 
-**Author:** Saad Namoune  
-**Stack:** Python · Astro · Tailwind CSS · GitHub Actions · OpenAI / Gemini
-
----
-
-## What it does
-
-Every day at 23:00 (Algeria time), a GitHub Actions workflow:
-
-1. **Fetches** articles from curated RSS feeds (Hacker News, OpenAI Blog, Anthropic, Hugging Face, The Hacker News, GitHub Trending, and more)
-2. **Summarizes & scores** each article using GPT-4o-mini — produces a title, English summary, topic tag, and quality score (1–10)
-3. **Selects** the top 20 highest-scored articles across 5 categories
-4. **Generates** a Markdown file `news/dailyNews_YYYY-MM-DD.md`
-5. **Commits** the file back to the repository automatically
-
-An [Astro](https://astro.build/) frontend renders all the Markdown files into a clean, fast static website deployable on Vercel or Netlify in one click.
+> Fully automated pipeline: RSS ingestion → LLM scoring & summarization → static site publishing via GitHub Actions + Vercel
 
 ---
 
-## News Categories
+## Overview
 
-| Category | Sources |
-|----------|---------|
-| 🤖 AI & LLMs | Hacker News AI, OpenAI Blog, Anthropic Blog, Google AI Blog |
-| 📥 Tech News | The Verge AI, MIT Tech Review, Ars Technica, InfoQ, Apple Developer |
-| 🔐 Cybersecurity | Hacker News Security, Krebs on Security, The Hacker News |
-| 💾 Open Source & Code | GitHub Trending Python, GitHub Trending All |
-| 📚 Research Papers | Hugging Face Daily Papers, Hacker News ML |
+AI News Radar is a personal research tool that aggregates and summarizes the most relevant daily news in:
+
+- Artificial Intelligence & Large Language Models
+- Cybersecurity & vulnerability research
+- Open-source software & developer tools
+- Research papers (HuggingFace, arXiv via HN)
+
+Every day at **23:00 Algeria time**, a GitHub Actions workflow fetches articles from 20+ curated RSS feeds, scores each one using a Mistral AI language model, and publishes the top results as a static Markdown blog via Vercel.
 
 ---
 
 ## Architecture
 
 ```
-GitHub Actions (cron: daily 22:00 UTC)
+RSS Feeds (20+ sources)
         │
         ▼
-  main.py
-        │
-        ├─ workflow/article/rss.py      ← fetch & parse RSS feeds
-        │         └─ feedparser, BeautifulSoup, requests
-        │
-        ├─ workflow/gpt/summary.py      ← call OpenAI / Gemini API
-        │         └─ score + summarize each article in English
-        │
-        ├─ workflow/mainflow.py         ← orchestrate, rank, select top 20
-        │
-        └─ workflow/article/blog.py     ← generate dailyNews_YYYY-MM-DD.md
-                  └─ written to /news/
+  workflow/rss.py       ← fetch & parse feeds (feedparser)
         │
         ▼
-  git commit + push
+  workflow/gpt/         ← score & summarize via Mistral AI
+  summary.py            ← OpenAI-compatible client (base_url override)
         │
         ▼
-  Astro frontend (yarn dev / Vercel deploy)
-        └─ renders /news/*.md as a static website
+  src/content/blog/     ← Markdown files with YAML frontmatter
+        │
+        ▼
+  Astro + Tailwind      ← static site build
+        │
+        ▼
+  Vercel                ← auto-deploy on every push
 ```
+
+---
+
+## RSS Sources
+
+| Category | Sources |
+|---|---|
+| AI & LLMs | HackerNews AI/LLM, OpenAI Blog, Anthropic Blog, Google AI Blog |
+| Tech News | The Verge, MIT Tech Review, Ars Technica, InfoQ, Facebook Engineering |
+| Cybersecurity | HackerNews Security, Krebs on Security, The Hacker News |
+| Open Source | GitHub Trending (Python & All), Julia Evans |
+| Research Papers | HuggingFace Daily Papers, HackerNews ML |
 
 ---
 
 ## Quick Start
 
-### 1. Clone and configure
+### Prerequisites
+
+- Python 3.10+
+- Node.js 18+ and Yarn
+- A [Mistral AI](https://console.mistral.ai) API key
+
+### Local Setup
 
 ```bash
-git clone https://github.com/SaadNamoune/<repo-name>.git
-cd <repo-name>
-cp .env.example .env
-```
+# Clone
+git clone https://github.com/SaadNamoune/ai-news-radar
+cd ai-news-radar
 
-Edit `.env`:
-
-```env
-AI_PROVIDER=openai           # or "gemini"
-GPT_API_KEY=sk-...           # your OpenAI or Gemini API key
-GPT_BASE_URL=                # leave empty for default OpenAI endpoint
-MAX_ARTICLE_NUMS=20
-RSS_CACHE_ENABLE=true
-```
-
-### 2. Install dependencies
-
-```bash
-# Python backend
+# Install Python dependencies
 pip install -r requirements.txt
 
-# Node frontend
-yarn install --ignore-engines
-```
+# Set environment variables
+cp .env.example .env
+# Edit .env: set GPT_API_KEY to your Mistral key
 
-### 3. Run the digest pipeline
-
-```bash
+# Run the pipeline
 python main.py
-```
 
-A new `news/dailyNews_YYYY-MM-DD.md` file will be created.
-
-### 4. Preview the website locally
-
-```bash
+# Start the frontend
+yarn install
 yarn dev
 ```
 
-Open [http://localhost:4321](http://localhost:4321).
+### Environment Variables
+
+| Variable | Value |
+|---|---|
+| `AI_PROVIDER` | `openai` |
+| `GPT_API_KEY` | Your Mistral AI key |
+| `GPT_BASE_URL` | `https://api.mistral.ai/v1` |
+| `GPT_MODEL_NAME` | `mistral-small-latest` |
+| `MAX_ARTICLE_NUMS` | `20` |
 
 ---
 
-## Deploy on Vercel
+## GitHub Actions Automation
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SaadNamoune/daily-ai-digest)
-
-Set the following GitHub repository secrets for the Actions workflow to run automatically:
-
-| Secret | Description |
-|--------|-------------|
-| `GPT_API_KEY` | Your OpenAI or Gemini API key |
-| `GPT_BASE_URL` | Custom API base URL (optional) |
-
----
-
-## Customize RSS Sources
-
-Edit [`workflow/resources/rss.json`](workflow/resources/rss.json) to add or remove feeds.
-
-Each item supports:
-
-```json5
-{
-  "title": "Feed display name",
-  "url": "https://example.com/rss",
-  "type": "link",       // "link" = scrape full page, "code" = GitHub README, omit = use RSS summary
-  "output_count": 2     // max articles to show from this feed per day
-}
-```
-
----
-
-## Project Structure
+The workflow runs daily and requires one GitHub Secret:
 
 ```
-.
-├── main.py                         # Entry point
-├── requirements.txt                # Python dependencies
-├── .env.example                    # Environment variables template
-│
-├── workflow/
-│   ├── mainflow.py                 # Orchestration: fetch → score → select → write
-│   ├── resources/
-│   │   └── rss.json                # RSS feed configuration
-│   ├── article/
-│   │   ├── rss.py                  # RSS parsing & web scraping
-│   │   └── blog.py                 # Markdown generation
-│   └── gpt/
-│       ├── prompt.py               # English system prompts for GPT
-│       └── summary.py              # OpenAI / Gemini API calls
-│
-├── news/                           # Auto-generated daily digests (Markdown)
-│   └── dailyNews_YYYY-MM-DD.md
-│
-├── .github/
-│   └── workflows/
-│       └── main.yml                # GitHub Actions cron workflow
-│
-└── src/                            # Astro frontend
-    └── ...
+Settings → Secrets → Actions → New repository secret
+Name:  GPT_API_KEY
+Value: <your Mistral API key>
 ```
+
+To trigger a manual run: **Actions → Daily AI Digest → Run workflow**
 
 ---
 
-## Supported AI Providers
+## Deployment (Vercel)
 
-| Provider | `AI_PROVIDER` value | Model used |
-|----------|---------------------|------------|
-| OpenAI | `openai` | `gpt-4o-mini` (configurable via `GPT_MODEL_NAME`) |
-| Google Gemini | `gemini` | `gemini-pro` |
+1. Import `SaadNamoune/ai-news-radar` from the Vercel dashboard
+2. Framework: **Astro** (auto-detected)
+3. Add environment variable `GPT_API_KEY` in Vercel project settings
+4. Deploy — every GitHub Actions push redeploys automatically
+
+---
+
+## Author
+
+**Saad Namoune**
+Software Engineer · [ENGISOFT.NET](https://engisoft.net)
+4th Year SIL · École Nationale Supérieure d'Informatique (ESI Alger)
+
+Research interests: distributed systems (Kubernetes, Kafka), machine learning, cybersecurity, LLM-based automation
+
+GitHub: [github.com/SaadNamoune](https://github.com/SaadNamoune)
+Email: saad.namoune28@gmail.com
 
 ---
 
 ## License
 
 MIT — see [LICENSE](LICENSE)
-
----
-
-*Built by [Saad Namoune](https://github.com/SaadNamoune) — ESI Algiers*

@@ -40,7 +40,7 @@ jobs:
           git config --global user.name "Saad Namoune"
           git config --global user.email "saad.namoune28@gmail.com"
 
-          git add news/*.md
+          git add src/content/blog/*.md
 
           # Only commit if there are changes
           if ! git diff --staged --quiet; then

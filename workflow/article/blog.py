@@ -66,8 +66,8 @@ def make_meta_data(description, tags):
     today_with_timezone = datetime.today().astimezone(time_zone)
     today_str = today_with_timezone.strftime("%Y-%m-%d")
 
-    project_root = os.path.dirname(current_directory)
-    news_folder = f"{project_root}/../news/"
+    project_root = os.path.dirname(os.path.dirname(current_directory))
+    news_folder = os.path.join(project_root, "src", "content", "blog")
     logger.info(f"News folder: {news_folder}")
     os.makedirs(news_folder, exist_ok=True)
 
