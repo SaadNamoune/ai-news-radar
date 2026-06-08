@@ -1,0 +1,53 @@
+name: Daily AI Digest
+
+on:
+  schedule:
+    - cron: "0 22 * * *"   # runs at 22:00 UTC = 23:00 Algeria time (UTC+1)
+
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  generate-daily-digest:
+    runs-on: ubuntu-latest
+
+    env:
+      AI_PROVIDER: openai
+      GPT_MODEL_NAME: gpt-4o-mini
+      GPT_BASE_URL: ${{ secrets.GPT_BASE_URL }}
+      GPT_API_KEY: ${{ secrets.GPT_API_KEY }}
+      MAX_ARTICLE_NUMS: 20
+      RSS_CACHE_ENABLE: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate daily AI digest
+        run: python main.py
+
+      - name: Commit and push digest to repository
+        run: |
+          git config --global user.name "Saad Namoune"
+          git config --global user.email "saad.namoune28@gmail.com"
+
+          git add news/*.md
+
+          # Only commit if there are changes
+          if ! git diff --staged --quiet; then
+            git commit -m "digest: $(date '+%Y-%m-%d') daily AI news"
+            git pull --rebase
+            git push
+            echo "Digest pushed successfully."
+          else
+            echo "No new digest to commit today."
+          fi
