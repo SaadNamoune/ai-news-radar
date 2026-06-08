@@ -8,22 +8,21 @@ import SearchModal from './SearchModal.svelte';
 import AiChat from './AiChat.svelte';
 ---
 <BaseLayout>
-    <br class="my-4"/>
-    <Header/>
-    <Nav/>
-    <div class="content">
-        <slot />
-    </div>
-    <br class="my-4"/>
-    <Footer/>
-    <Portal>
-            <SearchModal client:load/>
-    </Portal>
-    <AiChat client:load />
+  <Header />
+  <Nav />
+  <div class="page-content">
+    <slot />
+  </div>
+  <Footer />
+  <Portal>
+    <SearchModal client:load />
+  </Portal>
+  <AiChat client:load />
 </BaseLayout>
 
 <style>
-    .content {
-        min-height: 580px
-    }
+  .page-content {
+    min-height: 60vh;
+    padding-top: 0.5rem;
+  }
 </style>

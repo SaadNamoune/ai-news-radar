@@ -7,24 +7,28 @@ import PostPreviewList from "$/components/PostPreviewList.astro";
 import Paginator from "$/components/Paginator.astro";
 import { PAGE_SIZE } from "$/config";
 
-let title = "Blog";
-let description = "All the articles posted so far...";
-
 export async function getStaticPaths({ paginate }) {
   const allPosts = await getCollection("blog");
-  const sortedPosts = allPosts.sort(
-    (a, b) => new Date(b.data.date) - new Date(a.data.date)
+  const sorted = allPosts.sort(
+    (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
   );
-
-  return paginate(sortedPosts, {
-    pageSize: PAGE_SIZE,
-  });
+  return paginate(sorted, { pageSize: PAGE_SIZE });
 }
 
 const { page } = Astro.props;
+const isFirstPage = page.currentPage === 1;
 ---
 
-<DefaultPageLayout content={{ title, description }}>
-  <PostPreviewList posts={page.data} />
+<DefaultPageLayout
+  content={{
+    title: "Digest Archive",
+    description: `${page.total} issues — automated daily digest of AI, CS research, cybersecurity and open-source.`,
+  }}
+>
+  <PostPreviewList
+    posts={page.data}
+    mode="row"
+    showFeatured={isFirstPage}
+  />
   <Paginator page={page} />
 </DefaultPageLayout>

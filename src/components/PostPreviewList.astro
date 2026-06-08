@@ -7,51 +7,85 @@ interface Props {
   heading?: string;
   isWeekly?: boolean;
   mode?: "row" | "col";
+  showFeatured?: boolean;
 }
 
-const { posts, heading, isWeekly, mode = "col" } = Astro.props;
-const sortedPosts = [...posts].sort(
-  (a, b) =>
-    new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+const { posts, heading, isWeekly, mode = "col", showFeatured = false } = Astro.props;
+const sorted = [...posts].sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
 );
+
+const featured = showFeatured ? sorted[0] : null;
+const rest     = showFeatured ? sorted.slice(1) : sorted;
 ---
 
-{heading && (
-  <h5 class="list-heading ink-h">{heading}</h5>
+{heading && <h5 class="list-heading ink-h">{heading}</h5>}
+
+{featured && (
+  <div class="list-featured">
+    <PostPreview post={featured} featured={true} />
+  </div>
 )}
-<section class={`digest-list digest-list--${mode}`}>
-  {
-    sortedPosts.map((post) => (
-      <PostPreview
-        post={post}
-        asCard={mode === "row"}
-        isWeekly={isWeekly}
-      />
-    ))
-  }
-</section>
+
+{rest.length > 0 && (
+  <>
+    {showFeatured && rest.length > 0 && (
+      <div class="list-section-label">
+        <span>PREVIOUS ISSUES</span>
+      </div>
+    )}
+    <section class:list={["issue-grid", mode === "row" && "issue-grid--row"]}>
+      {rest.map((post) => (
+        <PostPreview post={post} asCard={true} isWeekly={isWeekly} />
+      ))}
+    </section>
+  </>
+)}
 
 <style>
-  .list-heading { @apply pl-1 mb-3; }
+  .list-heading { @apply pl-0 mb-3; }
 
-  .digest-list {
-    @apply flex flex-col gap-2;
+  .list-featured {
+    margin-bottom: 2rem;
   }
 
-  /* Row / card mode: responsive grid */
-  .digest-list--row {
+  .list-section-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .list-section-label span {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+    white-space: nowrap;
+  }
+  .list-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Default col mode — compact list */
+  .issue-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  /* Row / card grid mode */
+  .issue-grid--row {
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.75rem;
   }
   @media (min-width: 480px) {
-    .digest-list--row {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    .issue-grid--row { grid-template-columns: repeat(2, 1fr); }
   }
   @media (min-width: 768px) {
-    .digest-list--row {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    .issue-grid--row { grid-template-columns: repeat(3, 1fr); }
   }
 </style>

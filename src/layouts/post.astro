@@ -6,23 +6,22 @@ import BaseHead from "$/components/BaseHead.astro";
 import Prose from "$/components/Prose.astro";
 
 interface Props {
-  meta?: {
-    id: string;
-    slug: string;
-    collection: string;
-  };
+  meta?: { id: string; slug: string; collection: string };
   content: CollectionEntry<"blog">["data"];
 }
+
 const { content } = Astro.props;
 
-const formattedDate = new Intl.DateTimeFormat("en-US", {
-  weekday: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-}).format(new Date(content.date));
-
 const tags = content.tags || [];
+const date = new Date(content.date);
+
+const longDate = new Intl.DateTimeFormat("en-US", {
+  weekday: "long", year: "numeric", month: "long", day: "numeric",
+}).format(date);
+
+const shortDate = new Intl.DateTimeFormat("en-US", {
+  month: "short", day: "2-digit", year: "numeric",
+}).format(date);
 ---
 
 <!doctype html>
@@ -34,114 +33,182 @@ const tags = content.tags || [];
     />
   </head>
   <MainLayout>
-    <article class="post-article">
-      <!-- Article header -->
-      <header class="post-article__header">
-        <div class="post-article__kicker">
-          <span class="post-article__label">Daily Digest</span>
-          <span class="post-article__sep">·</span>
-          <time class="post-article__date" datetime={content.date}>{formattedDate}</time>
+    <article class="post-wrap">
+
+      <!-- ── Issue banner ── -->
+      <div class="issue-banner">
+        <div class="issue-banner__left">
+          <span class="issue-label">DAILY DIGEST</span>
+          <time class="issue-date" datetime={content.date}>{longDate}</time>
         </div>
-
-        <h1 class="post-article__title">{content.title}</h1>
-
-        <div class="post-article__meta">
-          <span class="post-article__author">By {SITE.author}</span>
-          {
-            tags.length > 0 && (
-              <>
-                <span class="post-article__sep">·</span>
-                <div class="post-article__tags">
-                  {tags.slice(0, 6).map((tag) => (
-                    <a class="post-article__tag" href={`/tags/${tag}`}>{tag}</a>
-                  ))}
-                </div>
-              </>
-            )
-          }
+        <div class="issue-banner__right">
+          {tags.slice(0, 4).map(tag => (
+            <a href={`/tags/${tag}`} class="issue-tag">{tag}</a>
+          ))}
         </div>
-      </header>
+      </div>
 
+      <!-- ── Article title block ── -->
+      <div class="post-title-block">
+        <h1 class="post-title">{content.title}</h1>
+        <p class="post-byline">
+          <span>{SITE.author}</span>
+          <span class="post-byline__sep" aria-hidden="true">·</span>
+          <span>{shortDate}</span>
+          <span class="post-byline__sep" aria-hidden="true">·</span>
+          <a href="/blog" class="post-byline__link">All issues</a>
+        </p>
+      </div>
+
+      <!-- ── Cover image ── -->
       {content.image && (
-        <figure class="post-article__cover">
+        <figure class="post-cover">
           <img src={content.image} alt={content.title} loading="lazy" />
         </figure>
       )}
 
-      <Prose>
-        <slot />
-      </Prose>
+      <!-- ── Body ── -->
+      <div class="post-body">
+        <Prose>
+          <slot />
+        </Prose>
+      </div>
+
+      <!-- ── Footer nav ── -->
+      <div class="post-footer">
+        <a href="/blog" class="post-footer__back">← All issues</a>
+        <a href="/rss.xml" class="post-footer__rss">Subscribe via RSS</a>
+      </div>
+
     </article>
   </MainLayout>
 </html>
 
 <style>
-  .post-article { @apply py-2; }
-
-  /* Kicker / breadcrumb row */
-  .post-article__header { @apply mb-6 pt-4; }
-  .post-article__kicker {
-    @apply flex items-center gap-2 text-xs font-medium mb-3;
-    color: #0284c7;
+  .post-wrap {
+    padding-top: 1.5rem;
+    padding-bottom: 3rem;
   }
-  html.dark .post-article__kicker { color: #38bdf8; }
-  .post-article__label {
-    @apply uppercase tracking-wider font-bold;
-  }
-  .post-article__sep { color: #cbd5e1; }
-  html.dark .post-article__sep { color: #334155; }
-  .post-article__date { color: #64748b; font-weight: 400; }
-  html.dark .post-article__date { color: #475569; }
 
-  /* Title */
-  .post-article__title {
-    @apply font-extrabold leading-tight mb-4;
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    letter-spacing: -0.025em;
-    color: #0f172a;
+  /* ── Issue banner ── */
+  .issue-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    margin-bottom: 1.75rem;
   }
-  html.dark .post-article__title { color: #f8fafc; }
-
-  /* Meta row */
-  .post-article__meta {
-    @apply flex flex-wrap items-center gap-2 text-sm;
-    color: #94a3b8;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid #e5e7eb;
+  .issue-banner__left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
-  html.dark .post-article__meta { border-bottom-color: #1e293b; }
-  .post-article__author { font-weight: 500; color: #6b7280; }
-  html.dark .post-article__author { color: #64748b; }
-
-  /* Tags */
-  .post-article__tags { @apply flex flex-wrap gap-1.5; }
-  .post-article__tag {
-    @apply text-xs px-2 py-0.5 rounded-full no-underline transition-colors duration-150;
-    background: #f0f9ff;
-    color: #0284c7;
-    border: 1px solid #bae6fd;
+  .issue-label {
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent);
+    padding: 0.2em 0.6em;
+    border-radius: 0.2rem;
+  }
+  .issue-date {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-2);
+  }
+  .issue-banner__right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+  .issue-tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.2em 0.55em;
+    border-radius: 0.2rem;
+    background: var(--bg-card);
+    color: var(--text-3);
+    border: 1px solid var(--border);
+    text-decoration: none;
     font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+    transition: color 0.15s, border-color 0.15s;
   }
-  html.dark .post-article__tag {
-    background: rgba(2, 132, 199, 0.08);
-    color: #38bdf8;
-    border-color: #0369a1;
-  }
-  .post-article__tag:hover { background: #e0f2fe; }
-  html.dark .post-article__tag:hover { background: rgba(2, 132, 199, 0.15); }
-
-  /* Cover image */
-  .post-article__cover {
-    @apply mb-6 rounded-lg overflow-hidden;
-    border: 1px solid #e5e7eb;
-  }
-  html.dark .post-article__cover { border-color: #1e293b; }
-  .post-article__cover img {
-    @apply w-full object-cover max-h-72;
+  .issue-tag:hover {
+    color: var(--accent);
+    border-color: var(--accent);
   }
 
-  /* Responsive title */
-  @media (max-width: 480px) {
-    .post-article__meta { @apply flex-col items-start gap-1.5; }
+  /* ── Title block ── */
+  .post-title-block {
+    margin-bottom: 1.75rem;
   }
+  .post-title {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .post-byline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--text-3);
+  }
+  .post-byline__sep { color: var(--border); }
+  .post-byline__link {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .post-byline__link:hover { text-decoration: underline; }
+
+  /* ── Cover ── */
+  .post-cover {
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .post-cover img {
+    width: 100%;
+    max-height: 360px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── Body: centered reading column ── */
+  .post-body {
+    max-width: 42rem;
+  }
+
+  /* ── Footer ── */
+  .post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+  .post-footer__back,
+  .post-footer__rss {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.15s;
+  }
+  .post-footer__back:hover,
+  .post-footer__rss:hover { opacity: 0.75; }
 </style>

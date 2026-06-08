@@ -4,32 +4,24 @@ import SvgIcon from "./SvgIcon.astro";
 import ModeSwitcherBtn from "./ModeSwitcherBtn.svelte";
 import SearchBtn from "./SearchBtn.svelte";
 
-const todayLabel = new Intl.DateTimeFormat("en-US", {
-  weekday: "short",
-  month: "short",
-  day: "numeric",
-  year: "numeric",
+const today = new Intl.DateTimeFormat("en-US", {
+  weekday: "short", month: "short", day: "numeric", year: "numeric",
 }).format(new Date());
 ---
 
 <header class="site-header">
-  <div class="site-header__top">
-    <a href="/" class="site-header__brand" title={SITE.name}>
-      <div class="brand-icon" aria-hidden="true">
-        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-          <rect width="36" height="36" rx="8" fill="#0284c7"/>
-          <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
-            font-family="system-ui,sans-serif" font-weight="800" font-size="14"
-            fill="white">AI</text>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <span class="brand-name">{SITE.name}</span>
-        <span class="brand-date">{todayLabel}</span>
-      </div>
+  <!-- ── Masthead row ── -->
+  <div class="masthead">
+    <a href="/" class="masthead__brand" title={SITE.name}>
+      <span class="masthead__name">{SITE.name.toUpperCase()}</span>
     </a>
-
-    <div class="site-header__actions">
+    <span class="masthead__rule" aria-hidden="true"></span>
+    <div class="masthead__meta">
+      <span class="masthead__date">{today}</span>
+      <span class="masthead__dot" aria-hidden="true">·</span>
+      <span class="masthead__tagline">AI · CS Research · Security</span>
+    </div>
+    <div class="masthead__actions">
       <SearchBtn client:visible />
       <a href={SITE.githubUrl} title="GitHub" class="icon-btn">
         <SvgIcon>
@@ -46,64 +38,78 @@ const todayLabel = new Intl.DateTimeFormat("en-US", {
       <ModeSwitcherBtn client:visible />
     </div>
   </div>
-
-  <p class="site-header__desc">{SITE.description}</p>
 </header>
 
 <style>
   .site-header {
-    @apply pt-6 pb-4;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  html.dark .site-header { border-bottom-color: #1e293b; }
-
-  .site-header__top {
-    @apply flex items-center justify-between gap-3 mb-2;
+    padding-top: 1.25rem;
+    margin-bottom: 0;
   }
 
-  .site-header__brand {
-    @apply flex items-center gap-2.5 no-underline flex-1 min-w-0;
-  }
-  .brand-icon {
-    @apply flex-none;
-  }
-  .brand-text {
-    @apply flex flex-col min-w-0;
-  }
-  .brand-name {
-    @apply font-extrabold text-lg leading-tight text-gray-900 dark:text-slate-50;
-    letter-spacing: -0.02em;
-  }
-  .brand-date {
-    @apply text-xs leading-tight;
-    color: #94a3b8;
+  /* ── Masthead ── */
+  .masthead {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--text);
+    flex-wrap: wrap;
   }
 
-  .site-header__actions {
-    @apply flex items-center gap-0.5 flex-none;
-    color: #9ca3af;
+  .masthead__brand { flex-shrink: 0; text-decoration: none; }
+  .masthead__name {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    white-space: nowrap;
+    line-height: 1;
   }
+  .masthead__brand:hover .masthead__name { color: var(--accent); }
+
+  .masthead__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    min-width: 2rem;
+    display: none;
+  }
+  @media (min-width: 640px) { .masthead__rule { display: block; } }
+
+  .masthead__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-2);
+    flex: 1;
+  }
+  .masthead__date { color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .masthead__dot { color: var(--text-3); }
+  .masthead__tagline { color: var(--text-3); }
+  @media (max-width: 520px) { .masthead__tagline { display: none; } }
+
+  .masthead__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    flex-shrink: 0;
+    color: var(--text-3);
+  }
+
   .icon-btn {
-    @apply p-2 rounded-md transition-colors duration-150;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 0.375rem;
+    transition: background 0.15s, color 0.15s;
+    text-decoration: none;
   }
   .icon-btn:hover {
-    background: #f1f5f9;
-    color: #374151;
-  }
-  html.dark .icon-btn:hover {
-    background: #1e293b;
-    color: #e2e8f0;
-  }
-
-  .site-header__desc {
-    @apply text-sm;
-    color: #6b7280;
-  }
-  html.dark .site-header__desc { color: #64748b; }
-
-  /* Responsive: hide description on tiny screens */
-  @media (max-width: 400px) {
-    .site-header__desc { display: none; }
-    .brand-date { display: none; }
+    background: var(--bg-alt);
+    color: var(--text);
   }
 </style>
