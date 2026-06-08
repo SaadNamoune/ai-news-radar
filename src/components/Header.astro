@@ -7,8 +7,13 @@ import SearchBtn from "./SearchBtn.svelte";
 
 <header class="header">
   <div class="header__logo">
-    <a href="/" class="avatar">
-      <img class="header__logo-img" src="/assets/logo.png" alt="Astro logo" />
+    <a href="/" class="logo-mark" title={SITE.name}>
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+        <rect width="80" height="80" rx="16" fill="currentColor" class="logo-bg"/>
+        <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle"
+          font-family="system-ui,sans-serif" font-weight="800" font-size="32"
+          fill="white">AI</text>
+      </svg>
     </a>
   </div>
   <div class="header__meta flex-1">
@@ -25,7 +30,7 @@ import SearchBtn from "./SearchBtn.svelte";
             <SearchBtn client:visible />
           </li>
           <li>
-            <a href={SITE.githubUrl} title={`${SITE.name}'s Github URL'`}>
+            <a href={SITE.githubUrl} title={`${SITE.name} on GitHub`}>
               <SvgIcon>
                 <path
                   d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
@@ -34,7 +39,7 @@ import SearchBtn from "./SearchBtn.svelte";
             </a>
           </li>
           <li>
-            <a href="/rss.xml" title="RSS">
+            <a href="/rss.xml" title="RSS Feed">
               <SvgIcon>
                 <path d="M4 11a9 9 0 0 1 9 9"></path>
                 <path d="M4 4a16 16 0 0 1 16 16"></path>
@@ -53,10 +58,16 @@ import SearchBtn from "./SearchBtn.svelte";
 
 <style>
   .header {
-    @apply flex gap-4 border-b py-3 /* border-gray-200 dark:border-gray-700 - check styles/global.css */;
+    @apply flex gap-4 border-b py-3;
   }
-  .header__logo-img {
-    @apply w-20 h-20 overflow-hidden;
+  .logo-mark {
+    @apply flex items-center justify-center w-16 h-16;
+  }
+  .logo-svg {
+    @apply w-16 h-16 text-theme-primary dark:text-theme-dark-primary;
+  }
+  .logo-bg {
+    @apply opacity-90;
   }
   .header__title {
     @apply text-4xl font-extrabold md:text-5xl text-theme-primary dark:text-theme-dark-primary;

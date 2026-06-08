@@ -1,14 +1,56 @@
 ---
 title: About
-description: 'AI make work life balance'
+description: 'AI News Radar — automated daily AI digest by Saad Namoune'
 ---
 
 import DefaultPageLayout from '$/layouts/default.astro'
 import Prose from '$/components/Prose.astro'
-import { Content as AboutAstroInk } from './../../README.md'
 
 <DefaultPageLayout content={{ title: frontmatter.title, description: frontmatter.description }}>
-    <Prose>
-      <AboutAstroInk/>
-    </Prose>
+  <Prose>
+
+## AI News Radar
+
+**AI News Radar** is an automated pipeline that aggregates, scores, and summarizes the most important daily news in AI, cybersecurity, and open-source — powered by [Mistral AI](https://mistral.ai).
+
+Every day at **23:00 Algeria time**, the system:
+1. Fetches articles from 20+ curated RSS feeds
+2. Scores each article using a language model (relevance, quality, novelty)
+3. Generates concise English summaries
+4. Publishes the digest automatically via GitHub Actions + Vercel
+
+---
+
+## Author
+
+**Saad Namoune**
+
+- Software Engineer at [ENGISOFT.NET](https://engisoft.net)
+- 4th Year SIL — École Nationale Supérieure d'Informatique (ESI Alger)
+- Research interests: distributed systems (Kubernetes, Kafka), ML, cybersecurity, LLM-based automation
+
+**GitHub:** [github.com/SaadNamoune](https://github.com/SaadNamoune)
+**Email:** saad.namoune28@gmail.com
+
+---
+
+## Sources
+
+| Category | Sources |
+|---|---|
+| AI & LLMs | HackerNews AI, OpenAI Blog, Anthropic Blog, Google AI Blog |
+| Tech News | The Verge, MIT Tech Review, Ars Technica, InfoQ |
+| Cybersecurity | HackerNews Security, Krebs on Security, The Hacker News |
+| Open Source | GitHub Trending, Julia Evans |
+| Research | HuggingFace Daily Papers, HackerNews ML |
+
+---
+
+## Stack
+
+- **Pipeline:** Python, feedparser, Mistral AI (OpenAI-compatible API)
+- **Frontend:** Astro, Tailwind CSS, Svelte
+- **CI/CD:** GitHub Actions (daily cron), Vercel (auto-deploy)
+
+  </Prose>
 </DefaultPageLayout>

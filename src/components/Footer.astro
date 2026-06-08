@@ -1,22 +1,35 @@
 ---
 import { SITE } from "$/config";
 import ModeLabel from "./ModeLabel.svelte";
+
+const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
   <nav class="nav">
-    <div>
-      2024 &copy; Copyright notice | <a
-        href={SITE.githubUrl}
-        title={`${SITE.name}'s Github URL'`}>{SITE.name}</a
-      >
-      <ModeLabel client:load /> theme on <a href="https://astro.build/"
-        >Astro</a>
+    <div class="footer__content">
+      <span>
+        &copy; {year} <a href={SITE.githubUrl} title="GitHub">{SITE.author}</a>
+        &mdash; <span class="footer__desc">{SITE.description}</span>
+      </span>
+      <span class="footer__theme">
+        <ModeLabel client:load /> mode &middot; built with <a href="https://astro.build/">Astro</a>
+      </span>
     </div>
   </nav>
 </footer>
+
 <style>
   .footer {
     @apply py-6 border-t;
+  }
+  .footer__content {
+    @apply flex flex-wrap justify-between gap-2 text-sm text-gray-400 dark:text-gray-500;
+  }
+  .footer__desc {
+    @apply hidden sm:inline;
+  }
+  .footer__theme {
+    @apply text-gray-400 dark:text-gray-600;
   }
 </style>
