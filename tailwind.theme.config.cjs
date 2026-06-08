@@ -16,20 +16,20 @@ module.exports = {
     },
   },
   /**
-   * AI News Radar — Electric Indigo theme
+   * AI News Radar — Research publication theme (sky blue, no violet)
    */
   ferry: {
     colors: {
-      primary: "#6366f1",
-      secondary: "#8b5cf6",
-      background: "#eef2ff",
+      primary: "#0284c7",
+      secondary: "#0369a1",
+      background: "#f0f9ff",
       dark: {
-        primary: "#818cf8",
-        secondary: "#c4b5fd",
+        primary: "#38bdf8",
+        secondary: "#7dd3fc",
       },
       accent: {
         gray: { light: colors.gray[300], dark: colors.gray[600] },
-        default: "#06b6d4",
+        default: "#0d9488",
       },
     },
   },

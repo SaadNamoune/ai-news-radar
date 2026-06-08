@@ -13,158 +13,127 @@ const {
 } = Astro.props;
 
 const postDate = new Date(post.date);
-const day = postDate.getDate();
-const month = getMonthName(post.date).slice(0, 3).toUpperCase();
+const day = String(postDate.getDate()).padStart(2, "0");
+const month = getMonthName(post.date).slice(0, 3);
 const year = postDate.getFullYear();
-const tags = (post.tags || []).slice(0, 4);
+const formattedDate = `${month} ${day}, ${year}`;
+const tags = (post.tags || []).slice(0, 5);
 ---
 
 <a
   href={`/${"blog"}/${slug}`}
-  class:list={["post-card", asCard && "post-card--grid"]}
+  class:list={["digest-card", asCard && "digest-card--grid"]}
   title={post.title}
 >
-  <div class="post-card__date" aria-label={`${day} ${month} ${year}`}>
-    <span class="date-day">{day}</span>
-    <span class="date-month">{month}</span>
-    <span class="date-year">{year}</span>
-  </div>
+  <div class="digest-card__inner">
+    <div class="digest-card__header">
+      <h4 class="digest-card__title">{post.title}</h4>
+      <span class="digest-card__date">{formattedDate}</span>
+    </div>
 
-  <div class="post-card__body">
-    <h4 class="post-card__title">{post.title}</h4>
     {
       tags.length > 0 && (
-        <div class="post-card__tags">
+        <div class="digest-card__tags">
           {tags.map((tag) => (
-            <span class="tag-pill">{tag}</span>
+            <span class="tag-chip">{tag}</span>
           ))}
         </div>
       )
     }
-    <p class="post-card__desc">{post.description}</p>
-  </div>
 
-  <span class="post-card__arrow" aria-hidden="true">→</span>
+    <p class="digest-card__desc">{post.description}</p>
+
+    <span class="digest-card__read">Read digest →</span>
+  </div>
 </a>
 
 <style>
-  .post-card {
-    @apply flex items-start gap-5 p-5 rounded-2xl no-underline cursor-pointer;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.07);
-    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+  .digest-card {
+    @apply block no-underline rounded-xl transition-all duration-200;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
     text-decoration: none !important;
   }
-  html.dark .post-card {
-    background: rgba(255, 255, 255, 0.025);
-    border-color: rgba(255, 255, 255, 0.06);
+  html.dark .digest-card {
+    background: #1e293b;
+    border-color: #334155;
   }
-  .post-card:hover {
-    border-color: rgba(99, 102, 241, 0.35);
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.08);
-    background: white;
+  .digest-card:hover {
+    border-color: #bae6fd;
+    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08);
   }
-  html.dark .post-card:hover {
-    border-color: rgba(129, 140, 248, 0.3);
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.12);
-    background: rgba(255, 255, 255, 0.04);
+  html.dark .digest-card:hover {
+    border-color: #0369a1;
+    box-shadow: 0 4px 20px rgba(2, 132, 199, 0.15);
   }
 
-  .post-card--grid {
-    @apply flex-col sm:w-72 md:w-64;
+  .digest-card--grid {
+    @apply w-full sm:w-72;
   }
 
-  /* Date badge */
-  .post-card__date {
-    @apply flex-none flex flex-col items-center text-center w-11 pt-0.5;
-  }
-  .post-card--grid .post-card__date {
-    @apply flex-row items-baseline gap-1.5 w-full;
-  }
-  .date-day {
-    @apply text-3xl font-black leading-none;
-    color: #6366f1;
-  }
-  html.dark .date-day {
-    color: #818cf8;
-  }
-  .post-card--grid .date-day {
-    @apply text-2xl;
-  }
-  .date-month {
-    @apply text-xs tracking-wider font-bold;
-    color: #9ca3af;
-    margin-top: 2px;
-  }
-  html.dark .date-month {
-    color: #6b7280;
-  }
-  .date-year {
-    @apply text-xs;
-    color: #d1d5db;
-  }
-  html.dark .date-year {
-    color: #374151;
+  .digest-card__inner {
+    @apply p-4 sm:p-5;
   }
 
-  /* Body */
-  .post-card__body {
-    @apply flex-1 min-w-0;
+  /* Header row: title + date */
+  .digest-card__header {
+    @apply flex items-start justify-between gap-3 mb-2;
   }
-  .post-card__title {
-    @apply text-sm font-bold leading-snug mb-1.5;
-    color: #111827;
+  .digest-card__title {
+    @apply text-sm font-bold leading-snug flex-1;
+    color: #0f172a;
     transition: color 0.15s;
   }
-  html.dark .post-card__title {
-    color: #f1f5f9;
-  }
-  .post-card:hover .post-card__title {
-    color: #6366f1;
-  }
-  html.dark .post-card:hover .post-card__title {
-    color: #818cf8;
-  }
+  html.dark .digest-card__title { color: #f1f5f9; }
+  .digest-card:hover .digest-card__title { color: #0284c7; }
+  html.dark .digest-card:hover .digest-card__title { color: #38bdf8; }
 
-  /* Tags */
-  .post-card__tags {
+  .digest-card__date {
+    @apply text-xs flex-none font-medium tabular-nums;
+    color: #94a3b8;
+    white-space: nowrap;
+  }
+  html.dark .digest-card__date { color: #475569; }
+
+  /* Tag chips */
+  .digest-card__tags {
     @apply flex flex-wrap gap-1 mb-2;
   }
-  .tag-pill {
-    @apply inline-block px-2 py-0.5 rounded-md text-xs font-medium;
-    background: rgba(99, 102, 241, 0.08);
-    color: #6366f1;
-    border: 1px solid rgba(99, 102, 241, 0.12);
+  .tag-chip {
+    @apply inline-block text-xs px-1.5 py-0.5 rounded;
+    background: #f1f5f9;
+    color: #475569;
+    font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+    border: 1px solid #e2e8f0;
+    font-size: 0.7rem;
   }
-  html.dark .tag-pill {
-    background: rgba(129, 140, 248, 0.1);
-    color: #a5b4fc;
-    border-color: rgba(129, 140, 248, 0.15);
+  html.dark .tag-chip {
+    background: #0f172a;
+    color: #64748b;
+    border-color: #1e293b;
   }
 
   /* Description */
-  .post-card__desc {
-    @apply text-xs leading-relaxed line-clamp-2;
+  .digest-card__desc {
+    @apply text-xs leading-relaxed line-clamp-2 mb-3;
     color: #6b7280;
   }
-  html.dark .post-card__desc {
-    color: #6b7280;
-  }
+  html.dark .digest-card__desc { color: #64748b; }
 
-  /* Arrow */
-  .post-card__arrow {
-    @apply flex-none text-base mt-0.5;
-    color: #e5e7eb;
-    transition: color 0.2s, transform 0.2s;
+  /* Read link */
+  .digest-card__read {
+    @apply text-xs font-semibold;
+    color: #0284c7;
+    opacity: 0;
+    transition: opacity 0.15s;
   }
-  html.dark .post-card__arrow {
-    color: #374151;
-  }
-  .post-card:hover .post-card__arrow {
-    color: #6366f1;
-    transform: translateX(3px);
-  }
-  html.dark .post-card:hover .post-card__arrow {
-    color: #818cf8;
+  html.dark .digest-card__read { color: #38bdf8; }
+  .digest-card:hover .digest-card__read { opacity: 1; }
+
+  /* Responsive: on mobile, make date go below title */
+  @media (max-width: 480px) {
+    .digest-card__header {
+      @apply flex-col gap-1;
+    }
   }
 </style>

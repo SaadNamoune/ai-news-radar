@@ -12,13 +12,11 @@ interface Props {
     collection: string;
   };
   content: CollectionEntry<"blog">["data"];
-  stats?: {
-    views: number;
-  };
 }
-const { content, meta } = Astro.props;
+const { content } = Astro.props;
 
 const formattedDate = new Intl.DateTimeFormat("en-US", {
+  weekday: "long",
   year: "numeric",
   month: "long",
   day: "numeric",
@@ -36,38 +34,38 @@ const tags = content.tags || [];
     />
   </head>
   <MainLayout>
-    <article>
+    <article class="post-article">
       <!-- Article header -->
-      <div class="post-header">
-        <div class="post-header__meta">
-          <time class="post-header__date" datetime={content.date}>
-            {formattedDate}
-          </time>
-          <span class="post-header__sep" aria-hidden="true">·</span>
-          <span class="post-header__author">{SITE.author}</span>
+      <header class="post-article__header">
+        <div class="post-article__kicker">
+          <span class="post-article__label">Daily Digest</span>
+          <span class="post-article__sep">·</span>
+          <time class="post-article__date" datetime={content.date}>{formattedDate}</time>
         </div>
 
-        <h1 class="post-header__title">{content.title}</h1>
+        <h1 class="post-article__title">{content.title}</h1>
 
-        {
-          tags.length > 0 && (
-            <div class="post-header__tags">
-              {tags.map((tag) => (
-                <a class="post-header__tag" href={`/tags/${tag}`} title={tag}>
-                  {tag}
-                </a>
-              ))}
-            </div>
-          )
-        }
-
-        <div class="post-header__divider" aria-hidden="true"></div>
-      </div>
+        <div class="post-article__meta">
+          <span class="post-article__author">By {SITE.author}</span>
+          {
+            tags.length > 0 && (
+              <>
+                <span class="post-article__sep">·</span>
+                <div class="post-article__tags">
+                  {tags.slice(0, 6).map((tag) => (
+                    <a class="post-article__tag" href={`/tags/${tag}`}>{tag}</a>
+                  ))}
+                </div>
+              </>
+            )
+          }
+        </div>
+      </header>
 
       {content.image && (
-        <div class="post-cover">
-          <img src={content.image} alt={content.title} />
-        </div>
+        <figure class="post-article__cover">
+          <img src={content.image} alt={content.title} loading="lazy" />
+        </figure>
       )}
 
       <Prose>
@@ -78,80 +76,72 @@ const tags = content.tags || [];
 </html>
 
 <style>
-  /* Article header */
-  .post-header {
-    @apply pt-6 pb-2 mb-2;
-  }
-  .post-header__meta {
-    @apply flex items-center gap-2 text-sm mb-3;
-    color: #9ca3af;
-  }
-  html.dark .post-header__meta {
-    color: #6b7280;
-  }
-  .post-header__date {
-    font-variant-numeric: tabular-nums;
-  }
-  .post-header__sep {
-    color: #d1d5db;
-  }
-  html.dark .post-header__sep {
-    color: #374151;
-  }
-  .post-header__author {
-    font-weight: 500;
-    color: #6b7280;
-  }
-  html.dark .post-header__author {
-    color: #9ca3af;
-  }
+  .post-article { @apply py-2; }
 
-  .post-header__title {
-    @apply text-3xl md:text-4xl font-black leading-tight mb-4 tracking-tight;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  /* Kicker / breadcrumb row */
+  .post-article__header { @apply mb-6 pt-4; }
+  .post-article__kicker {
+    @apply flex items-center gap-2 text-xs font-medium mb-3;
+    color: #0284c7;
   }
+  html.dark .post-article__kicker { color: #38bdf8; }
+  .post-article__label {
+    @apply uppercase tracking-wider font-bold;
+  }
+  .post-article__sep { color: #cbd5e1; }
+  html.dark .post-article__sep { color: #334155; }
+  .post-article__date { color: #64748b; font-weight: 400; }
+  html.dark .post-article__date { color: #475569; }
 
-  .post-header__tags {
-    @apply flex flex-wrap gap-2 mb-4;
+  /* Title */
+  .post-article__title {
+    @apply font-extrabold leading-tight mb-4;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    letter-spacing: -0.025em;
+    color: #0f172a;
   }
-  .post-header__tag {
-    @apply px-2.5 py-1 rounded-full text-xs font-semibold no-underline transition-colors duration-150;
-    background: rgba(99, 102, 241, 0.08);
-    color: #6366f1;
-    border: 1px solid rgba(99, 102, 241, 0.15);
-  }
-  html.dark .post-header__tag {
-    background: rgba(129, 140, 248, 0.1);
-    color: #a5b4fc;
-    border-color: rgba(129, 140, 248, 0.18);
-  }
-  .post-header__tag:hover {
-    background: rgba(99, 102, 241, 0.15);
-  }
-  html.dark .post-header__tag:hover {
-    background: rgba(129, 140, 248, 0.18);
-  }
+  html.dark .post-article__title { color: #f8fafc; }
 
-  .post-header__divider {
-    @apply mt-2 rounded-full;
-    height: 2px;
-    background: linear-gradient(90deg, #6366f1, #a855f7, transparent);
-    max-width: 240px;
-    opacity: 0.5;
+  /* Meta row */
+  .post-article__meta {
+    @apply flex flex-wrap items-center gap-2 text-sm;
+    color: #94a3b8;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
   }
+  html.dark .post-article__meta { border-bottom-color: #1e293b; }
+  .post-article__author { font-weight: 500; color: #6b7280; }
+  html.dark .post-article__author { color: #64748b; }
+
+  /* Tags */
+  .post-article__tags { @apply flex flex-wrap gap-1.5; }
+  .post-article__tag {
+    @apply text-xs px-2 py-0.5 rounded-full no-underline transition-colors duration-150;
+    background: #f0f9ff;
+    color: #0284c7;
+    border: 1px solid #bae6fd;
+    font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+  }
+  html.dark .post-article__tag {
+    background: rgba(2, 132, 199, 0.08);
+    color: #38bdf8;
+    border-color: #0369a1;
+  }
+  .post-article__tag:hover { background: #e0f2fe; }
+  html.dark .post-article__tag:hover { background: rgba(2, 132, 199, 0.15); }
 
   /* Cover image */
-  .post-cover {
-    @apply mb-6 rounded-2xl overflow-hidden;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+  .post-article__cover {
+    @apply mb-6 rounded-lg overflow-hidden;
+    border: 1px solid #e5e7eb;
   }
-  html.dark .post-cover {
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  html.dark .post-article__cover { border-color: #1e293b; }
+  .post-article__cover img {
+    @apply w-full object-cover max-h-72;
   }
-  .post-cover img {
-    @apply w-full object-cover max-h-80;
+
+  /* Responsive title */
+  @media (max-width: 480px) {
+    .post-article__meta { @apply flex-col items-start gap-1.5; }
   }
 </style>

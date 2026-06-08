@@ -3,114 +3,107 @@ import { SITE } from "$/config";
 import SvgIcon from "./SvgIcon.astro";
 import ModeSwitcherBtn from "./ModeSwitcherBtn.svelte";
 import SearchBtn from "./SearchBtn.svelte";
+
+const todayLabel = new Intl.DateTimeFormat("en-US", {
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+}).format(new Date());
 ---
 
-<header class="header">
-  <a href="/" class="header__brand" title={SITE.name}>
-    <div class="logo-box">
-      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#6366f1"/>
-            <stop offset="1" stop-color="#8b5cf6"/>
-          </linearGradient>
-        </defs>
-        <rect width="40" height="40" rx="10" fill="url(#logoGrad)"/>
-        <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
-          font-family="system-ui,sans-serif" font-weight="800" font-size="16"
-          fill="white">AI</text>
-      </svg>
-      <span class="logo-pulse" aria-hidden="true"></span>
-    </div>
-    <div class="header__brand-text">
-      <span class="header__site-name">{SITE.name}</span>
-      <span class="header__tagline">Daily AI & CS digest · Mistral-powered</span>
-    </div>
-  </a>
+<header class="site-header">
+  <div class="site-header__top">
+    <a href="/" class="site-header__brand" title={SITE.name}>
+      <div class="brand-icon" aria-hidden="true">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+          <rect width="36" height="36" rx="8" fill="#0284c7"/>
+          <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
+            font-family="system-ui,sans-serif" font-weight="800" font-size="14"
+            fill="white">AI</text>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">{SITE.name}</span>
+        <span class="brand-date">{todayLabel}</span>
+      </div>
+    </a>
 
-  <div class="header__actions">
-    <SearchBtn client:visible />
-    <a href={SITE.githubUrl} title={`${SITE.name} on GitHub`} class="action-btn">
-      <SvgIcon>
-        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-      </SvgIcon>
-    </a>
-    <a href="/rss.xml" title="RSS Feed" class="action-btn">
-      <SvgIcon>
-        <path d="M4 11a9 9 0 0 1 9 9"></path>
-        <path d="M4 4a16 16 0 0 1 16 16"></path>
-        <circle cx="5" cy="19" r="1"></circle>
-      </SvgIcon>
-    </a>
-    <ModeSwitcherBtn client:visible />
+    <div class="site-header__actions">
+      <SearchBtn client:visible />
+      <a href={SITE.githubUrl} title="GitHub" class="icon-btn">
+        <SvgIcon>
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </SvgIcon>
+      </a>
+      <a href="/rss.xml" title="RSS Feed" class="icon-btn">
+        <SvgIcon>
+          <path d="M4 11a9 9 0 0 1 9 9"></path>
+          <path d="M4 4a16 16 0 0 1 16 16"></path>
+          <circle cx="5" cy="19" r="1"></circle>
+        </SvgIcon>
+      </a>
+      <ModeSwitcherBtn client:visible />
+    </div>
   </div>
+
+  <p class="site-header__desc">{SITE.description}</p>
 </header>
 
 <style>
-  .header {
-    @apply flex items-center justify-between py-5 gap-4;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  .site-header {
+    @apply pt-6 pb-4;
+    border-bottom: 1px solid #e5e7eb;
   }
-  html.dark .header {
-    border-bottom-color: rgba(255, 255, 255, 0.06);
+  html.dark .site-header { border-bottom-color: #1e293b; }
+
+  .site-header__top {
+    @apply flex items-center justify-between gap-3 mb-2;
   }
 
-  .header__brand {
-    @apply flex items-center gap-3 flex-1 min-w-0 no-underline;
+  .site-header__brand {
+    @apply flex items-center gap-2.5 no-underline flex-1 min-w-0;
   }
-
-  .logo-box {
-    @apply relative flex-none;
+  .brand-icon {
+    @apply flex-none;
   }
-  .logo-box svg {
-    @apply w-10 h-10;
-  }
-  .logo-pulse {
-    @apply absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full;
-    background: #818cf8;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
-    animation: pulse-glow 2.5s ease-in-out infinite;
-  }
-  @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25); }
-    50% { box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.08); }
-  }
-
-  .header__brand-text {
+  .brand-text {
     @apply flex flex-col min-w-0;
   }
-  .header__site-name {
-    @apply text-xl font-black leading-tight;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .brand-name {
+    @apply font-extrabold text-lg leading-tight text-gray-900 dark:text-slate-50;
+    letter-spacing: -0.02em;
   }
-  .header__tagline {
-    @apply text-xs leading-tight truncate;
-    color: #9ca3af;
-  }
-  html.dark .header__tagline {
-    color: #6b7280;
+  .brand-date {
+    @apply text-xs leading-tight;
+    color: #94a3b8;
   }
 
-  .header__actions {
-    @apply flex items-center gap-0.5;
+  .site-header__actions {
+    @apply flex items-center gap-0.5 flex-none;
     color: #9ca3af;
   }
-  html.dark .header__actions {
-    color: #6b7280;
+  .icon-btn {
+    @apply p-2 rounded-md transition-colors duration-150;
   }
-
-  .action-btn {
-    @apply p-2 rounded-lg transition-colors duration-150;
-  }
-  .action-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
+  .icon-btn:hover {
+    background: #f1f5f9;
     color: #374151;
   }
-  html.dark .action-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #d1d5db;
+  html.dark .icon-btn:hover {
+    background: #1e293b;
+    color: #e2e8f0;
+  }
+
+  .site-header__desc {
+    @apply text-sm;
+    color: #6b7280;
+  }
+  html.dark .site-header__desc { color: #64748b; }
+
+  /* Responsive: hide description on tiny screens */
+  @media (max-width: 400px) {
+    .site-header__desc { display: none; }
+    .brand-date { display: none; }
   }
 </style>

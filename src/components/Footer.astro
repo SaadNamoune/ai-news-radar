@@ -5,103 +5,74 @@ import ModeLabel from "./ModeLabel.svelte";
 const year = new Date().getFullYear();
 ---
 
-<footer class="footer">
-  <div class="footer__inner">
-    <div class="footer__brand">
-      <span class="footer__name">{SITE.name}</span>
-      <p class="footer__bio">
-        Daily AI, cybersecurity &amp; CS research digest — curated by Mistral AI.
-      </p>
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__left">
+      <span class="site-footer__brand">{SITE.name}</span>
+      <span class="site-footer__sep">·</span>
+      <span class="site-footer__copy">&copy; {year} {SITE.author}</span>
     </div>
 
-    <div class="footer__links">
-      <a href="/blog" class="footer__link">Blog</a>
-      <a href="/tags" class="footer__link">Tags</a>
-      <a href="/about" class="footer__link">About</a>
-      <a href={SITE.githubUrl} class="footer__link" target="_blank" rel="noopener">GitHub</a>
-      <a href="/rss.xml" class="footer__link">RSS</a>
+    <div class="site-footer__right">
+      <a href="/blog" class="footer-link">Archives</a>
+      <a href="/tags" class="footer-link">Tags</a>
+      <a href="/about" class="footer-link">About</a>
+      <a href="/rss.xml" class="footer-link">RSS</a>
+      <span class="site-footer__sep">·</span>
+      <span class="site-footer__mode"><ModeLabel client:load /></span>
+      <span class="site-footer__sep">·</span>
+      <a href="https://astro.build/" class="footer-link" target="_blank" rel="noopener">Astro</a>
     </div>
-  </div>
-
-  <div class="footer__meta">
-    <span>&copy; {year} <a href={SITE.githubUrl} class="footer__meta-link">{SITE.author}</a></span>
-    <span class="footer__dot">·</span>
-    <span><ModeLabel client:load /> mode</span>
-    <span class="footer__dot">·</span>
-    <span>Built with <a href="https://astro.build/" class="footer__meta-link" target="_blank" rel="noopener">Astro</a></span>
   </div>
 </footer>
 
 <style>
-  .footer {
-    @apply pt-8 pb-6 mt-16;
-    border-top: 1px solid rgba(0, 0, 0, 0.07);
+  .site-footer {
+    @apply pt-6 pb-8 mt-12;
+    border-top: 1px solid #e5e7eb;
   }
-  html.dark .footer {
-    border-top-color: rgba(255, 255, 255, 0.05);
+  html.dark .site-footer { border-top-color: #1e293b; }
+
+  .site-footer__inner {
+    @apply flex flex-wrap justify-between items-center gap-3;
   }
 
-  .footer__inner {
-    @apply flex flex-col sm:flex-row justify-between gap-6 mb-6;
+  .site-footer__left {
+    @apply flex items-center gap-2 text-sm;
+    color: #94a3b8;
   }
-  .footer__brand {
-    @apply flex flex-col gap-1;
-  }
-  .footer__name {
-    @apply font-black text-base;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .footer__bio {
-    @apply text-xs;
-    color: #9ca3af;
-    max-width: 32ch;
-  }
-  html.dark .footer__bio {
-    color: #4b5563;
-  }
+  html.dark .site-footer__left { color: #475569; }
 
-  .footer__links {
-    @apply flex flex-wrap gap-4;
+  .site-footer__brand {
+    font-weight: 700;
+    color: #64748b;
   }
-  .footer__link {
-    @apply text-sm font-medium transition-colors duration-150;
-    color: #9ca3af;
+  html.dark .site-footer__brand { color: #334155; }
+
+  .site-footer__sep { color: #d1d5db; }
+  html.dark .site-footer__sep { color: #1e293b; }
+
+  .site-footer__right {
+    @apply flex flex-wrap items-center gap-2 text-xs;
+    color: #94a3b8;
+  }
+  html.dark .site-footer__right { color: #475569; }
+
+  .footer-link {
     text-decoration: none;
+    color: #94a3b8;
+    transition: color 0.15s;
   }
-  html.dark .footer__link {
-    color: #4b5563;
-  }
-  .footer__link:hover {
-    color: #6366f1;
-  }
-  html.dark .footer__link:hover {
-    color: #818cf8;
-  }
+  html.dark .footer-link { color: #475569; }
+  .footer-link:hover { color: #0284c7; }
+  html.dark .footer-link:hover { color: #38bdf8; }
 
-  .footer__meta {
-    @apply flex items-center flex-wrap gap-2 text-xs;
-    color: #d1d5db;
-  }
-  html.dark .footer__meta {
-    color: #374151;
-  }
-  .footer__meta-link {
-    text-decoration: none;
-    color: inherit;
-  }
-  .footer__meta-link:hover {
-    color: #6366f1;
-  }
-  html.dark .footer__meta-link:hover {
-    color: #818cf8;
-  }
-  .footer__dot {
-    color: #e5e7eb;
-  }
-  html.dark .footer__dot {
-    color: #1f2937;
+  .site-footer__mode { color: #94a3b8; }
+  html.dark .site-footer__mode { color: #475569; }
+
+  /* Stack on very small screens */
+  @media (max-width: 480px) {
+    .site-footer__inner { @apply flex-col items-start; }
+    .site-footer__right { @apply gap-2; }
   }
 </style>
