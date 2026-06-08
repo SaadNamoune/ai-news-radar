@@ -1,0 +1,144 @@
+{
+    "configuration": {
+        "rsshub_domain": "https://rsshub.app/"
+    },
+    "categories": [
+        {
+            "category": "🤖 AI & LLMs",
+            "items": [
+                {
+                    "title": "Hacker News — AI",
+                    "url": "https://hnrss.org/newest?q=AI",
+                    "type": "link",
+                    "output_count": 3
+                },
+                {
+                    "title": "Hacker News — LLM",
+                    "url": "https://hnrss.org/newest?q=llm",
+                    "type": "link",
+                    "output_count": 2
+                },
+                {
+                    "title": "OpenAI Blog",
+                    "url": "https://openai.com/blog/rss.xml",
+                    "type": "link",
+                    "output_count": 2
+                },
+                {
+                    "title": "Anthropic Blog",
+                    "url": "https://www.anthropic.com/rss.xml",
+                    "type": "link",
+                    "output_count": 1
+                },
+                {
+                    "title": "Google AI Blog",
+                    "url": "https://blog.research.google/feeds/posts/default",
+                    "type": "link",
+                    "output_count": 1
+                }
+            ]
+        },
+        {
+            "category": "📥 Tech News",
+            "items": [
+                {
+                    "title": "The Verge — AI",
+                    "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+                    "type": "link",
+                    "output_count": 2
+                },
+                {
+                    "title": "MIT Technology Review",
+                    "url": "https://www.technologyreview.com/feed/",
+                    "type": "link",
+                    "output_count": 1
+                },
+                {
+                    "title": "Ars Technica",
+                    "url": "https://feeds.arstechnica.com/arstechnica/technology-lab",
+                    "type": "link",
+                    "output_count": 1
+                },
+                {
+                    "title": "Facebook Engineering",
+                    "url": "https://engineering.fb.com/feed/",
+                    "output_count": 1
+                },
+                {
+                    "title": "Julia Evans Blog",
+                    "url": "https://jvns.ca/atom.xml",
+                    "type": "link",
+                    "output_count": 1
+                },
+                {
+                    "title": "InfoQ AI & ML",
+                    "url": "https://feed.infoq.com/ai-ml-data-eng",
+                    "type": "link",
+                    "output_count": 1
+                },
+                {
+                    "title": "Apple Developer News",
+                    "url": "https://developer.apple.com/news/rss/news.rss",
+                    "output_count": 1,
+                    "image_enable": true
+                }
+            ]
+        },
+        {
+            "category": "🔐 Cybersecurity",
+            "items": [
+                {
+                    "title": "Hacker News — Security",
+                    "url": "https://hnrss.org/newest?q=security",
+                    "type": "link",
+                    "output_count": 2
+                },
+                {
+                    "title": "Krebs on Security",
+                    "url": "https://krebsonsecurity.com/feed/",
+                    "type": "link",
+                    "output_count": 1
+                },
+                {
+                    "title": "The Hacker News",
+                    "url": "https://feeds.feedburner.com/TheHackersNews",
+                    "type": "link",
+                    "output_count": 2
+                }
+            ]
+        },
+        {
+            "category": "💾 Open Source & Code",
+            "items": [
+                {
+                    "title": "GitHub Trending — Python",
+                    "rsshub_path": "github/trending/daily/python",
+                    "type": "code",
+                    "output_count": 2
+                },
+                {
+                    "title": "GitHub Trending — All Languages",
+                    "rsshub_path": "github/trending/weekly/any",
+                    "type": "code",
+                    "output_count": 2
+                }
+            ]
+        },
+        {
+            "category": "📚 Research Papers",
+            "items": [
+                {
+                    "title": "Hugging Face Daily Papers",
+                    "rsshub_path": "huggingface/daily-papers",
+                    "output_count": 3
+                },
+                {
+                    "title": "Hacker News — ML",
+                    "url": "https://hnrss.org/newest?q=machine+learning",
+                    "type": "link",
+                    "output_count": 1
+                }
+            ]
+        }
+    ]
+}
