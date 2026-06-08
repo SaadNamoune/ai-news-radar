@@ -13,8 +13,8 @@ jobs:
 
     env:
       AI_PROVIDER: openai
-      GPT_MODEL_NAME: gemini-2.5-flash
-      GPT_BASE_URL: ${{ secrets.GPT_BASE_URL }}
+      GPT_MODEL_NAME: mistral-small-latest
+      GPT_BASE_URL: https://api.mistral.ai/v1
       GPT_API_KEY: ${{ secrets.GPT_API_KEY }}
       MAX_ARTICLE_NUMS: 20
       RSS_CACHE_ENABLE: true
