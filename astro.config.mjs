@@ -19,7 +19,7 @@ import rehypeExternalLinks from "rehype-external-links";
 export default defineConfig(
   /** @type {import('astro').AstroUserConfig} */ {
     output: "server",
-    site: "https://zhangferry.com", // Your public domain, e.g.: https://my-site.dev/. Used to generate sitemaps and canonical URLs.
+    site: "https://ai-news-radar.vercel.app",
     server: {
       // port: 4321, // The port to run the dev server on.
     },
