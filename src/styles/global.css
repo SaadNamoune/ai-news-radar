@@ -41,6 +41,35 @@
 	@apply inline-block relative top-4 px-2 pt-1 pb-5 text-sm text-theme-primary dark:text-theme-dark-primary bg-gradient-to-br from-theme-primary/30 dark:from-theme-dark-primary/30 to-theme-dark-primary/30 dark:to-theme-primary/30 rounded-t-md shadow-sm;
 }
 
+/** Research digest article cards **/
+.prose h3 {
+	@apply text-xl font-bold mt-8 mb-2;
+}
+.prose h3 a {
+	@apply text-theme-primary dark:text-theme-dark-primary no-underline hover:underline;
+}
+.prose small {
+	@apply text-sm text-gray-500 dark:text-gray-400;
+}
+.prose img {
+	@apply rounded-xl shadow-md my-4 w-full object-cover max-h-72;
+}
+.prose hr {
+	@apply border-gray-100 dark:border-gray-800 my-6;
+}
+.prose strong {
+	@apply text-gray-800 dark:text-gray-200;
+}
+.prose code {
+	@apply bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm text-theme-primary dark:text-theme-dark-primary;
+}
+.prose blockquote {
+	@apply border-l-4 border-theme-primary dark:border-theme-dark-primary pl-4 text-gray-600 dark:text-gray-300 italic my-4;
+}
+.prose a[href^="→"] {
+	@apply text-theme-primary dark:text-theme-dark-primary font-semibold no-underline hover:underline text-sm;
+}
+
 /** Shiki theme - Light/Dark mode **/
 
 :root {

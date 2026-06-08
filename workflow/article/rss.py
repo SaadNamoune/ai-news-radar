@@ -11,8 +11,7 @@ from markdown import markdown
 import base64
 import time
 
-# 统一时区
-time_zone_value = "Asia/Shanghai"
+time_zone_value = "Africa/Algiers"
 
 
 class Article:
@@ -75,50 +74,74 @@ def load_rss_configs(resource):
     return rss_items
 
 
-def parse_rss_config(rss_config):
-    """仅获取当天的rss信息"""
+def fetch_og_image(url: str, timeout: int = 4) -> str:
+    """Fetch og:image or twitter:image from an article URL."""
     try:
-        res = feedparser.parse(rss_config["url"],
-                               agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
+        resp = requests.get(url, timeout=timeout, verify=False,
+                            headers={"User-Agent": "Mozilla/5.0 (compatible; NewsBot/1.0)"})
+        if resp.status_code != 200:
+            return ""
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for prop in ("og:image", "twitter:image"):
+            tag = soup.find("meta", property=prop) or soup.find("meta", attrs={"name": prop})
+            if tag and tag.get("content"):
+                return tag["content"]
+    except Exception:
+        pass
+    return ""
+
+
+def parse_rss_config(rss_config):
+    """Fetch today's (or latest N) articles from an RSS feed."""
+    try:
+        url = rss_config.get("url")
+        if not url and "rsshub_path" in rss_config:
+            url = rss_config.get("url", "")
+        res = feedparser.parse(url,
+                               agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36")
         keymap = res.keymap
-        today_rss = []
-        # 默认一个rss源只获取一定数量信息
+        collected = []
         max_count = rss_config.get("input_count", 4)
+        skip_date_filter = rss_config.get("skip_date_filter", False)
 
         for article in res[keymap["items"]]:
-            # 获取当天信息
             time_zone = tz.gettz(time_zone_value)
             target_date = datetime.today().astimezone(time_zone).date()
-            # issued > date > res.date
-            article_date = unify_timezone(article.get(keymap["issued"],
-                                                      article.get(keymap["date"],
-                                                                  res.get(keymap["date"]))))
-            if article_date.date() != target_date:
-                # logger.warning(f'{rss_config["url"]} content of {article_date.date()} is not equal to {target_date}')
+            raw_date = article.get(keymap.get("issued", "issued"),
+                                   article.get(keymap.get("date", "date"),
+                                               res.get(keymap.get("date", "date"), "")))
+            try:
+                article_date = unify_timezone(raw_date)
+            except Exception:
+                if skip_date_filter:
+                    article_date = datetime.today().astimezone(tz.gettz(time_zone_value))
+                else:
+                    continue
+
+            if not skip_date_filter and article_date.date() != target_date:
                 continue
+
             rss = gen_article_from(rss_item=article, rss_type=rss_config.get("type"),
                                    image_enable=rss_config.get("image_enable", False),
-                                   rss_date=article_date.strftime("%Y-%m-%d %H:%M:%S"), channel=res[keymap["channel"]],
+                                   fetch_og=rss_config.get("fetch_og_image", False),
+                                   rss_date=article_date.strftime("%Y-%m-%d %H:%M:%S"),
+                                   channel=res[keymap["channel"]],
                                    config=rss_config)
             if rss is None:
-                # logger.warning(f'{rss_config["url"]} content is empty')
                 continue
-            today_rss.append(rss)
-            if len(today_rss) >= max_count:
-                logger.warning(f'{rss_config["url"]} content count of today is over {max_count}, break')
-                return today_rss
-        # 防止一个地址有过多内容，这里限定下数量
-        if len(today_rss) == 0:
-            logger.info(f'{rss_config["url"]} content of today is empty')
-        else:
-            logger.info(f'{rss_config["url"]} content count of today is {len(today_rss)}')
-        return today_rss
+            collected.append(rss)
+            if len(collected) >= max_count:
+                break
+
+        logger.info(f'{url} → {len(collected)} article(s)')
+        return collected
     except Exception as e:
-        logger.error(f'Failed to parse RSS from {rss_config["url"]}: {e}')
+        logger.error(f'Failed to parse RSS from {rss_config.get("url", "?")}: {e}')
         return []
 
 
-def gen_article_from(rss_item, rss_type, image_enable=False, rss_date=None, channel=None, config=None):
+def gen_article_from(rss_item, rss_type, image_enable=False, fetch_og=False,
+                     rss_date=None, channel=None, config=None):
     title = rss_item["title"]
     link = rss_item["link"]
     summary_raw = rss_item.get("summary", "")
@@ -133,6 +156,10 @@ def gen_article_from(rss_item, rss_type, image_enable=False, rss_date=None, chan
 
     if not summary or len(summary) < 10:
         return None
+
+    # Try OG image if RSS feed has no image
+    if not image_url and fetch_og:
+        image_url = fetch_og_image(link)
 
     article = Article(title=title,
                       summary=summary,

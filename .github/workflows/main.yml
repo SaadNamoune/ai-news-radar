@@ -19,7 +19,7 @@ jobs:
       GPT_MODEL_NAME: mistral-small-latest
       GPT_BASE_URL: https://api.mistral.ai/v1
       GPT_API_KEY: ${{ secrets.GPT_API_KEY }}
-      MAX_ARTICLE_NUMS: 20
+      MAX_ARTICLE_NUMS: 35
       RSS_CACHE_ENABLE: true
 
     steps:

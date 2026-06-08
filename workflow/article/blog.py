@@ -93,16 +93,28 @@ def make_daily_category(category, articles):
     for article in articles:
         if article.config["category"] != category:
             continue
-        cover = f"![]({article.cover_url})" if article.cover_url else ""
+
+        tags = article.evaluate.get("tags", [])
+        tags_str = " ".join([f"`{t}`" for t in tags]) if tags else ""
+
+        cover = (
+            f"\n![{article.evaluate['title']}]({article.cover_url})\n"
+            if article.cover_url
+            else ""
+        )
+
+        summary = article.evaluate.get("summary", "")
+
         article_intro = f"""
 ### [{article.evaluate["title"]}]({article.link})
 
-**Source:** {article.info["title"]}
-
-**Published:** {article.date}
+<small>**{article.info["title"]}** &nbsp;·&nbsp; {article.date} &nbsp;·&nbsp; {tags_str}</small>
 {cover}
-{article.evaluate["summary"]}
+{summary}
 
+[→ Read full article]({article.link})
+
+---
 """
         content += article_intro
     if content:
