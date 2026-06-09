@@ -1,14 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-  <!-- Radar arcs emanating from bottom-right corner node -->
-  <path d="M 6 42 A 25 25 0 0 1 42 6"
-        stroke="#0284c7" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
-  <path d="M 10 42 A 18 18 0 0 1 42 10"
-        stroke="#0284c7" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
-  <path d="M 15 42 A 10 10 0 0 1 42 15"
-        stroke="#0284c7" stroke-width="3" stroke-linecap="round"/>
-  <!-- Origin node (the "station") -->
-  <circle cx="42" cy="42" r="3.5" fill="#0284c7"/>
-  <!-- Signal blip detected (top-left) -->
-  <circle cx="14" cy="11" r="3" fill="#0284c7" opacity="0.9"/>
-  <circle cx="14" cy="11" r="5.5" stroke="#0284c7" stroke-width="1.5" opacity="0.35"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <!-- Radar rings -->
+  <circle cx="20" cy="20" r="17" stroke="#0284c7" stroke-width="1.5" opacity="0.18"/>
+  <circle cx="20" cy="20" r="11.5" stroke="#0284c7" stroke-width="1.5" opacity="0.45"/>
+  <circle cx="20" cy="20" r="6" stroke="#0284c7" stroke-width="2" opacity="0.8"/>
+  <!-- Center dot -->
+  <circle cx="20" cy="20" r="2.5" fill="#0284c7"/>
+  <!-- Sweep arm -->
+  <line x1="20" y1="20" x2="33.5" y2="9" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/>
+  <!-- Signal blip -->
+  <circle cx="30.5" cy="11.5" r="2.5" fill="#38bdf8"/>
+  <circle cx="30.5" cy="11.5" r="4.5" stroke="#38bdf8" stroke-width="1" opacity="0.4"/>
 </svg>
