@@ -23,20 +23,30 @@
     searchInput.focus()
   })
 
-  $: {
-    if (searchQuery && searchQuery.length >= 2 && searchIndex) {
+  function doSearch(q) {
+    if (!searchIndex || !q || q.length < 2) { searchResults = []; return }
+    try {
+      // Try exact + fuzzy fallback
+      let matches = searchIndex.search(q)
+      if (!matches.length) matches = searchIndex.search(q + '~1')
+      searchResults = matches
+        .map((m) => searchableDocs.find((d) => d.slug === m.ref))
+        .filter(Boolean)
+    } catch {
       try {
-        const matches = searchIndex.search(searchQuery + '*')
+        // Escape special lunr chars and retry
+        const safe = q.replace(/[+\-&|!(){}\[\]^"~*?:\\]/g, '\\$&')
+        const matches = searchIndex.search(safe)
         searchResults = matches
           .map((m) => searchableDocs.find((d) => d.slug === m.ref))
           .filter(Boolean)
       } catch {
         searchResults = []
       }
-    } else {
-      searchResults = []
     }
   }
+
+  $: doSearch(searchQuery)
 </script>
 
 <div class="search-box">

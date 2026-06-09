@@ -1,56 +1,42 @@
-import path from "path";
 import { promises as fs } from "fs";
 import { globby } from "globby";
 import grayMatter from "gray-matter";
+import { join } from "path";
 
 (async function () {
-  // prepare the dirs
-  const srcDir = path.join(process.cwd(), "src");
-  const publicDir = path.join(process.cwd(), "public");
-  const contentBlogDir = path.join(srcDir, "content", "blog");
-  const contentWeeklyDir = path.join(srcDir, "content", "weekly");
-  // 过滤出文件后缀为md或者mdx的文件
-  const mdContentFilePattern = path.join(contentBlogDir, "*.md");
-  const mdxContentFilePattern = path.join(contentBlogDir, "*.mdx");
+  const cwd = process.cwd().replace(/\\/g, "/");
 
-  const mdWeeklyFilePattern = path.join(contentWeeklyDir, "*.md");
-  const mdxWeeklyFilePattern = path.join(contentWeeklyDir, "*.mdx");
+  // Use forward slashes for glob patterns (required by fast-glob on all platforms)
+  const blogPattern = `${cwd}/src/content/blog/*.{md,mdx}`;
 
-  const indexFile = path.join(publicDir, "search-index.json");
-  const getSlugFromPathname = (pathname) =>
-    path.basename(pathname, path.extname(pathname));
+  const indexFile = join(process.cwd(), "public", "search-index.json");
 
-  const contentFilePaths = await globby([
-    mdContentFilePattern,
-    mdxContentFilePattern,
-    mdWeeklyFilePattern,
-    mdxWeeklyFilePattern,
-  ]);
+  const contentFilePaths = await globby([blogPattern]);
 
-  if (contentFilePaths.length) {
-    const files = contentFilePaths.map(
-      async (filePath) => await fs.readFile(filePath, "utf8")
-    );
-    const index = [];
-    let i = 0;
-    for await (let file of files) {
-      const {
-        data: { title, description, tags },
-        content,
-      } = grayMatter(file);
-      index.push({
-        slug: getSlugFromPathname(contentFilePaths[i]),
-        category: "blog",
-        title,
-        description,
-        tags,
-        body: content,
-      });
-      i++;
-    }
-    await fs.writeFile(indexFile, JSON.stringify(index));
-    console.log(
-      `Indexed ${index.length} documents from ${contentBlogDir} to ${indexFile}`
-    );
+  if (!contentFilePaths.length) {
+    console.warn("[search-index] No content files found — skipping index generation");
+    return;
   }
+
+  const index = [];
+  for (const filePath of contentFilePaths) {
+    const raw = await fs.readFile(filePath, "utf8");
+    const { data: { title, description, tags }, content } = grayMatter(raw);
+
+    // Skip placeholder posts from the index
+    const slug = filePath.split("/").pop().replace(/\.(md|mdx)$/, "");
+    if (slug === "placeholder") continue;
+
+    index.push({
+      slug,
+      category: "blog",
+      title: title ?? "",
+      description: description ?? "",
+      tags: Array.isArray(tags) ? tags : [],
+      body: content,
+    });
+  }
+
+  await fs.writeFile(indexFile, JSON.stringify(index));
+  console.log(`[search-index] Indexed ${index.length} document(s) → ${indexFile}`);
 })();

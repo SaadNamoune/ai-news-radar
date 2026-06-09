@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env THEME_KEY=ferry astro dev",
+    "prebuild": "node ./scripts/search/prepare-index.js",
     "build": "cross-env THEME_KEY=ferry astro build",
     "check": "astro check",
-    "postbuild": "node ./scripts/patch-vercel-runtime.mjs && node ./scripts/search/prepare-index.js",
+    "postbuild": "node ./scripts/patch-vercel-runtime.mjs",
     "preview": "astro preview",
     "check:type": "tsc --project tsconfig.json --pretty --noEmit",
     "lint": "biome lint src",
