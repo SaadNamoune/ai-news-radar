@@ -13,6 +13,7 @@ const today = new Intl.DateTimeFormat("en-US", {
   <!-- ── Masthead row ── -->
   <div class="masthead">
     <a href="/" class="masthead__brand" title={SITE.name}>
+      <img src="/logo.svg" alt="" class="masthead__logo" aria-hidden="true" />
       <span class="masthead__name">{SITE.name.toUpperCase()}</span>
     </a>
     <span class="masthead__rule" aria-hidden="true"></span>
@@ -56,7 +57,18 @@ const today = new Intl.DateTimeFormat("en-US", {
     flex-wrap: wrap;
   }
 
-  .masthead__brand { flex-shrink: 0; text-decoration: none; }
+  .masthead__brand {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .masthead__logo {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
   .masthead__name {
     font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: 900;
