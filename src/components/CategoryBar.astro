@@ -1,0 +1,90 @@
+---
+const categories = [
+  { label: "AI & LLMs",         href: "/tags/LLM-agents",        color: "#0284c7" },
+  { label: "CS Research",       href: "/tags/formal-verification", color: "#7c3aed" },
+  { label: "Cybersecurity",     href: "/tags/cybersecurity",      color: "#dc2626" },
+  { label: "Systems",           href: "/tags/distributed-training", color: "#059669" },
+  { label: "Open Source",       href: "/tags/open-source-security", color: "#d97706" },
+  { label: "Agentic AI",        href: "/tags/agentic-ai",         color: "#db2777" },
+];
+---
+
+<div class="category-bar" role="navigation" aria-label="Topics">
+  <div class="category-bar__label">Topics</div>
+  <div class="category-bar__divider"></div>
+  <ul class="category-bar__list">
+    {categories.map(c => (
+      <li>
+        <a href={c.href} class="cat-link" style={`--cat: ${c.color}`}>
+          {c.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .category-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem 0 0.6rem;
+    border-bottom: 1px solid var(--border-alt);
+    margin-bottom: 0.25rem;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .category-bar::-webkit-scrollbar { display: none; }
+
+  .category-bar__label {
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    flex-shrink: 0;
+  }
+  .category-bar__divider {
+    width: 1px;
+    height: 12px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .category-bar__list {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: nowrap;
+  }
+
+  .cat-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-2);
+    text-decoration: none;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+    transition: color 0.15s, background 0.15s;
+  }
+  .cat-link::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--cat);
+    flex-shrink: 0;
+  }
+  .cat-link:hover {
+    color: var(--cat);
+    background: var(--bg-alt);
+  }
+</style>

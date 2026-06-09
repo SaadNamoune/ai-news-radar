@@ -148,9 +148,11 @@
     font-weight: 500;
     background: transparent;
     border: none;
-    outline: none;
+    outline: none !important;
+    box-shadow: none !important;
     color: var(--text);
     letter-spacing: -0.01em;
+    -webkit-appearance: none;
   }
   .search-input::placeholder { color: var(--text-3); font-weight: 400; }
 

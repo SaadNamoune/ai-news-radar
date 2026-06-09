@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import Nav from './Nav.astro';
+import CategoryBar from './CategoryBar.astro';
 import Portal from './Portal.astro';
 import SearchModal from './SearchModal.svelte';
 import AiChat from './AiChat.svelte';
@@ -10,6 +11,7 @@ import AiChat from './AiChat.svelte';
 <BaseLayout>
   <Header />
   <Nav />
+  <CategoryBar />
   <div class="page-content">
     <slot />
   </div>

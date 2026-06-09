@@ -47,8 +47,7 @@
     border-radius: 0.75rem;
     overflow: hidden;
     box-shadow:
-      0 0 0 1px var(--border),
-      0 24px 64px rgba(0,0,0,0.35),
-      0 8px 24px rgba(0,0,0,0.2);
+      0 32px 80px rgba(0,0,0,0.4),
+      0 8px 24px rgba(0,0,0,0.25);
   }
 </style>
