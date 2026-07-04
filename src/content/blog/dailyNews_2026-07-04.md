@@ -1,182 +1,150 @@
 ---
 title: "Daily AI Digest #2026-07-04"
-date: "2026-07-04 00:01:18"
-description: "Wiola: A First-Principles Small Language Model Architecture
-Cognitive Firewall: Multi-Turn Safety Oversight for LLMs
-Hypic: Hybrid-Attention LLM Serving with Position-Independent Caching
-M-QCDNet: Multilayer Q-Matrix-Embedded Neural Network for Cognitive Diagnosis
-Adversarial Robustness in Programming-by-Example Systems
-PACE: Neuro-symbolic Framework for Feasibility-Aware Counterfactual Explanations
-Embedding Inference Attacks on Black-Box Retrieval Systems
-SLFS: Serverless Distributed File System with Fine-Grained Elasticity
-PAIR-Bench: Progressive and Adaptive Benchmark for LLM Code Improvement
-GPUAlert: Reliable Failure Monitoring for GPU Training Jobs
-Intra-Inter Riemannian Manifold Attention Network for EEG-Based Stress Detection"
+date: "2026-07-04 23:57:20"
+description: "Kortex: Out-of-core LLM inference engine in Rust with streaming across memory hierarchy
+Agent Budget Protocol: Real-time cost control for AI agent runs
+Can AI invert AES? A feasibility analysis of breaking AES-XTS with ML
+AI Cost Calculator: Procurement-grade multi-agent LLM deployment cost modeling
+Microsoft’s experimental Copilot OS (Aion) explores agentic AI-driven desktop UX
+Apple’s Hide My Email Service Leaks Real Addresses Due to Unpatched Vulnerability
+Alibaba Bans Claude Code Over Hidden Tracking Code for Chinese Users
+PHP Ecosystem Security Engineering: One Month Progress Report"
 tags:
-- "position-independent-caching"
-- "hybrid-attention"
-- "attention-mechanism"
-- "explainable-ai"
-- "neuro-symbolic-ai"
-- "jailbreak-defense"
-- "embedding-inversion"
-- "information-retrieval"
-- "program-repair"
-- "LLM-safety"
-- "interpretability"
-- "cognitive-diagnosis"
-- "positional-encoding"
-- "LLM-evaluation"
-- "KV-caching"
-- "distributed-file-system"
-- "adversarial-robustness"
-- "stress-detection"
-- "black-box-attack"
-- "command-line-tools"
-- "conversation-level-analysis"
-- "Q-matrix"
-- "failure-detection"
-- "RAG-security"
-- "DSL"
-- "neural-networks"
-- "programming-by-example"
-- "elasticity"
-- "version-space"
-- "EEG"
-- "language-model-architecture"
-- "benchmark-design"
-- "GPU-training"
-- "LLM-serving"
-- "log-analysis"
-- "Riemannian-manifold"
-- "serverless"
-- "cold-start"
-- "counterfactual-explanations"
-- "runtime-safeguards"
-- "code-generation"
+- "copilot-integration"
+- "PHP-ecosystem"
+- "agent-framework"
+- "email-forwarding"
+- "ui-innovation"
+- "open-source-security"
+- "cryptanalysis"
+- "cost-modeling"
+- "procurement-tools"
+- "streaming-architecture"
+- "budget-enforcement"
+- "ai-cost-control"
+- "vulnerability-scanning"
+- "LiteLLM"
+- "llm-inference"
+- "one-way-functions"
+- "privacy-leak"
+- "spyware"
+- "constraint-satisfaction"
+- "out-of-core"
+- "agentic-ai"
+- "CVE-unknown"
+- "code-agent"
+- "windows-os"
+- "llm-deployment"
+- "security-research"
+- "rust"
+- "supply-chain-risk"
+- "aes-inversion"
+- "security-automation"
+- "enterprise-policy"
 
 ---
 
-> - Wiola: A First-Principles Small Language Model Architecture
-> - Cognitive Firewall: Multi-Turn Safety Oversight for LLMs
-> - Hypic: Hybrid-Attention LLM Serving with Position-Independent Caching
-> - M-QCDNet: Multilayer Q-Matrix-Embedded Neural Network for Cognitive Diagnosis
-> - Adversarial Robustness in Programming-by-Example Systems
-> - PACE: Neuro-symbolic Framework for Feasibility-Aware Counterfactual Explanations
-> - Embedding Inference Attacks on Black-Box Retrieval Systems
-> - SLFS: Serverless Distributed File System with Fine-Grained Elasticity
-> - PAIR-Bench: Progressive and Adaptive Benchmark for LLM Code Improvement
-> - GPUAlert: Reliable Failure Monitoring for GPU Training Jobs
-> - Intra-Inter Riemannian Manifold Attention Network for EEG-Based Stress Detection
+> - Kortex: Out-of-core LLM inference engine in Rust with streaming across memory hierarchy
+> - Agent Budget Protocol: Real-time cost control for AI agent runs
+> - Can AI invert AES? A feasibility analysis of breaking AES-XTS with ML
+> - AI Cost Calculator: Procurement-grade multi-agent LLM deployment cost modeling
+> - Microsoft’s experimental Copilot OS (Aion) explores agentic AI-driven desktop UX
+> - Apple’s Hide My Email Service Leaks Real Addresses Due to Unpatched Vulnerability
+> - Alibaba Bans Claude Code Over Hidden Tracking Code for Chinese Users
+> - PHP Ecosystem Security Engineering: One Month Progress Report
 
-## CS Research & Papers
+## AI & Large Language Models
 
-### [Wiola: A First-Principles Small Language Model Architecture](https://arxiv.org/abs/2607.01394)
+### [Kortex: Out-of-core LLM inference engine in Rust with streaming across memory hierarchy](https://github.com/Vage91/Kortex)
 
-<small>**cs.AI updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `language-model-architecture` `positional-encoding` `attention-mechanism`</small>
+<small>**Hacker News - Newest: "llm"** &nbsp;·&nbsp; 2026-07-04 23:47:59 &nbsp;·&nbsp; `llm-inference` `out-of-core` `streaming-architecture` `rust`</small>
 
-**Overview:** Wiola presents a novel Small Language Model (SLM) architecture with five independently novel components, departing from existing model families (GPT, LLaMA). It targets efficiency and performance without inheriting structural biases. **Method:** Key innovations include: (1) Spiral Rotary Positional Encoding (SRPE) for 3D helical positional signals; (2) Gated Cross-Layer Attention (GCLA) for inter-layer coherence; (3) Adaptive Token Merging (ATM) to reduce attention complexity; (4) Dual Stream Feed-Forward (DSFF) with learned gating; (5) WiolaRMSNorm for preventing representation collapse. The architecture is released in four sizes (120M–1.5B params) and is HuggingFace-compatible. **Results:** Systematic comparisons against GPT-2, LLaMA-2, and Mistral show competitive performance with reduced complexity. **Impact:** Establishes a new architectural paradigm for SLMs, offering a foundation for future research in efficient, interpretable language models.
+![Kortex: Out-of-core LLM inference engine in Rust with streaming across memory hierarchy](https://opengraph.githubassets.com/1fe82e4300c58e30d590ff1a00e22ed7f180fcdeddd1619620262843bf06d937/Vage91/Kortex)
 
-[→ Read full article](https://arxiv.org/abs/2607.01394)
+**Overview:** Kortex is a novel out-of-core LLM inference engine implemented from scratch in Rust, enabling inference of models far exceeding GPU VRAM by treating inference as a streaming problem across the memory hierarchy (NVMe → RAM → VRAM → compute). It achieves ~1.95 tok/s for Llama-3.3-70B (42.5 GB weights) on a 20 GB GPU, outperforming llama.cpp on the same hardware. **Method:** Kortex uses a streaming pipeline with FILE_FLAG_NO_BUFFERING, a wgpu+WGSL GPU backend (Vulkan/DX12), and a pure-CPU reference backend for correctness verification. It employs speculative decoding, parallel NVMe reads, and auto-detected VRAM/RAM budgets. **Results:** On a Radeon RX 7900 XT (20 GB VRAM, 32 GB RAM, dual NVMe), Kortex achieves 1.95 tok/s for 70B vs. 0.21 tok/s for partial offload in llama.cpp, and 160 tok/s for a 30B MoE model. **Impact:** Advances practical LLM deployment by enabling large-model inference on consumer GPUs without vendor-specific SDKs, opening new research directions in memory-efficient inference architectures.
 
----
-
-### [Cognitive Firewall: Multi-Turn Safety Oversight for LLMs](https://arxiv.org/abs/2607.01277)
-
-<small>**cs.CR updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `LLM-safety` `runtime-safeguards` `jailbreak-defense` `conversation-level-analysis`</small>
-
-**Overview:** The Cognitive Firewall is a proactive runtime oversight framework that decomposes safety assessment into four categorical gates (intent, zero-trust context, consistency, output risk) to detect harmful multi-turn strategies in LLM interactions. This matters because existing safeguards often fail to detect accumulated intent or decomposed harmful objectives across dialogue turns. **Method:** The framework interposes an independent oversight model between user and target LLM, combining gate decisions via escalation (not averaging) to block interactions if any gate detects danger. **Results:** Experiments on four jailbreak benchmarks show the Cognitive Firewall reduces attack success to ≤2% on three datasets and 14% on the most difficult human-crafted set, while maintaining an 8% over-refusal rate. **Impact:** Demonstrates that decomposed, conversation-level oversight can significantly improve proactive LLM safety and auditability, addressing gaps in current runtime safeguards.
-
-[→ Read full article](https://arxiv.org/abs/2607.01277)
+[→ Read full article](https://github.com/Vage91/Kortex)
 
 ---
 
-### [Hypic: Hybrid-Attention LLM Serving with Position-Independent Caching](https://arxiv.org/abs/2607.01299)
+### [Agent Budget Protocol: Real-time cost control for AI agent runs](https://github.com/iamapsrajput/agent-budget-protocol/blob/main/RFC.md)
 
-<small>**cs.DC updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `hybrid-attention` `KV-caching` `LLM-serving` `position-independent-caching`</small>
+<small>**Hacker News - Newest: "AI"** &nbsp;·&nbsp; 2026-07-04 23:42:00 &nbsp;·&nbsp; `ai-cost-control` `agent-framework` `budget-enforcement` `LiteLLM`</small>
 
-**Overview:** Hypic is the first serving system enabling position-independent caching (PIC) for hybrid-attention LLMs, addressing the prefill-stage bottleneck in RAG and agentic LLM serving where prompts are assembled from non-contiguous segments. **Method:** For linear-attention layers, Hypic introduces the segment-cumulative transition operator as a cached algebraic primitive, enabling constant-time state composition of independently cached segments. For full-attention layers, it recomputes only a small "seam window" at segment boundaries to restore cross-segment lookback. Hypic also parallelizes cache-miss prefill across instances to mitigate tail latency. **Results:** Across four hybrid-attention models and five workloads, Hypic reduces time-to-first-token (TTFT) by 2.45x on average and improves peak throughput by up to 2.0x over existing systems, while maintaining accuracy within 3.3 points of full-recompute baselines. **Impact:** Hypic advances LLM serving efficiency by unifying PIC and hybrid-attention architectures, opening new research directions in state composition and boundary-aware recomputation for long-context models.
+![Agent Budget Protocol: Real-time cost control for AI agent runs](https://opengraph.githubassets.com/c0cdcd6a8e209989d29d0b4c103faa5c0e824b2818638cd6f610304aca219ba8/iamapsrajput/agent-budget-protocol)
 
-[→ Read full article](https://arxiv.org/abs/2607.01299)
+**Overview:** The Agent Budget Protocol (RFC) proposes a real-time budget decision plane to prevent unbounded AI agent spend by atomically reserving estimated costs before provider calls and reconciling afterward. **Method:** The protocol introduces a run-scoped budget authority that enforces cost limits across hierarchical scopes (run/user/team/key/feature) via atomic transactions (e.g., Redis Lua scripts). It supports four enforcement modes (advisory_estimate, soft_gate, hard_gate, actuals_only) and dynamically adjusts `effective_max_output_tokens` to bound exposure. Headers like `X-Budget-Decision` and `X-Budget-Remaining-USD` provide machine-readable state. **Results:** Phase 1 integrates with LiteLLM; Phase 2 targets a standalone sidecar. The design guarantees no overage in hard-gate mode if price tables model all billable dimensions (e.g., reasoning tokens). **Impact:** Addresses structural issues in agentic AI (e.g., $4.2K weekend bills) by shifting from post-hoc auditing to pre-call enforcement. Open questions include adoption barriers and handling unmodeled billing classes.
 
----
-
-### [M-QCDNet: Multilayer Q-Matrix-Embedded Neural Network for Cognitive Diagnosis](https://arxiv.org/abs/2607.01278)
-
-<small>**cs.LG updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `cognitive-diagnosis` `neural-networks` `interpretability` `Q-matrix`</small>
-
-**Overview:** M-QCDNet integrates cognitive diagnostic models (CDMs) with neural networks by embedding the Q-matrix as a structural prior to ensure interpretable latent mastery profiles. This bridges psychometric transparency and neural flexibility for actionable AI in education. **Method:** The model structures item-skill relationships using the Q-matrix, followed by a loss function with L2 penalty to penalize misaligned skills. Interpretable alignment-based metrics quantify predicted skill activations against item-level skills. **Results:** Enables early detection of learning difficulties and supports mastery-based interventions in classroom practice. **Impact:** Advances interpretable, fair, and actionable AI for cognitive diagnostics, offering practical benefits in educational settings.
-
-[→ Read full article](https://arxiv.org/abs/2607.01278)
+[→ Read full article](https://github.com/iamapsrajput/agent-budget-protocol/blob/main/RFC.md)
 
 ---
 
-### [Adversarial Robustness in Programming-by-Example Systems](https://arxiv.org/abs/2607.01280)
+### [Can AI invert AES? A feasibility analysis of breaking AES-XTS with ML](https://www.juanslozano.com/blog/ai-aes)
 
-<small>**cs.LG updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `programming-by-example` `adversarial-robustness` `version-space` `DSL`</small>
+<small>**Hacker News - Newest: "AI"** &nbsp;·&nbsp; 2026-07-04 23:11:17 &nbsp;·&nbsp; `aes-inversion` `cryptanalysis` `constraint-satisfaction` `one-way-functions`</small>
 
-**Overview:** Studies adversarial corruption in programming-by-example (PBE) systems where an adversary exploits synthesizer knowledge to corrupt examples and degrade program synthesis. **Method:** Formalizes fixed-set worst-case corruption for finite PBE version spaces, introduces version-space partition aggregation (VPA) as a defense, and evaluates exact-within-bounded-pool and heuristic corruption searches for a string-transformation DSL. **Results:** Shows that low-margin PBE tasks are vulnerable to adversarial corruption, while VPA recovers some tasks under bounded corruption. Public SyGuS tasks show near-zero vote margins, making VPA ineffective against adaptive attackers. **Impact:** Highlights a critical robustness dimension in PBE systems, demonstrating limitations of traditional noise-based evaluations and the need for semantic-aware defenses.
+**Overview:** This post argues that AI *might* eventually invert AES by framing it as a constraint-satisfaction problem (CSP), though complexity theory suggests fundamental limits. **Method:** The author models AES-XTS (used in full-disk encryption) as a CSP with two encodings: (1) *opaque* (monolithic cipher as a black box) and (2) *lowered* (exposing internal wires for intermediary rewards). The latter enables local search by providing thousands of intermediate variables (wires) to optimize, but requires maintaining consistency across constraints. **Results:** The CSP approach leverages the fact that AES’s security relies on average-case hardness, not worst-case NP-hardness. However, the search landscape remains challenging due to AES’s avalanche effect and the need for precise constraint modeling. **Impact:** While no breakthrough is demonstrated, the post highlights a plausible research direction for cryptanalysis using ML. It underscores the tension between theoretical hardness and practical solvability, inviting further work on CSP-based attacks or hybrid AI-cryptanalysis methods.
 
-[→ Read full article](https://arxiv.org/abs/2607.01280)
-
----
-
-### [PACE: Neuro-symbolic Framework for Feasibility-Aware Counterfactual Explanations](https://arxiv.org/abs/2607.01306)
-
-<small>**cs.AI updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `counterfactual-explanations` `neuro-symbolic-ai` `explainable-ai`</small>
-
-**Overview:** PACE introduces a neuro-symbolic framework for generating counterfactual explanations that are both feasible and interpretable by integrating a neural predictive model with a symbolic reasoning layer. This addresses the limitation of traditional counterfactual methods, which often produce unrealistic recommendations due to unconstrained input modifications. **Method:** The framework separates prediction (via a neural classifier) and reasoning (via Answer Set Programming) into two components. The symbolic layer enforces domain-specific constraints (e.g., immutable attributes, feasible interventions like education or occupation changes) during counterfactual generation. **Results:** A case study on the Adult Income dataset shows that symbolic constraints improve feasibility without sacrificing validity, highlighting trade-offs between counterfactual validity and plausibility. **Impact:** Advances explainable AI by ensuring actionable, domain-consistent counterfactuals, opening avenues for transparent decision support in high-stakes applications.
-
-[→ Read full article](https://arxiv.org/abs/2607.01306)
+[→ Read full article](https://www.juanslozano.com/blog/ai-aes)
 
 ---
 
-### [Embedding Inference Attacks on Black-Box Retrieval Systems](https://arxiv.org/abs/2607.01276)
+### [AI Cost Calculator: Procurement-grade multi-agent LLM deployment cost modeling](https://calc.ajinkya.ai/)
 
-<small>**cs.CR updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `embedding-inversion` `information-retrieval` `black-box-attack` `RAG-security`</small>
+<small>**Hacker News - Newest: "llm"** &nbsp;·&nbsp; 2026-07-04 20:43:51 &nbsp;·&nbsp; `cost-modeling` `llm-deployment` `procurement-tools`</small>
 
-**Overview:** This paper introduces an embedding inference attack (EIA) that identifies the embedding model used in a black-box information retrieval (IR) system by observing only the unordered set of retrieved documents. This matters because IR systems often hide their embedding models behind APIs, and such attacks could enable adversaries to exploit model-specific vulnerabilities without direct access. **Method:** The attack constructs tailored queries that are discriminative for specific embedding models, even when a reranker is present. The method is validated on a real Retrieval-Augmented Generation (RAG) system, where tailored queries bypass LLM rejection mechanisms. Mitigation strategies like similarity thresholds are also proposed. **Results:** The attack successfully identifies embedding models from a candidate set under black-box conditions, including in RAG systems. **Impact:** Highlights a new attack vector for IR systems, emphasizing the need for stronger black-box defenses and model-agnostic retrieval mechanisms.
+**Overview:** AI Cost Calculator is a browser-based tool for estimating TCO of multi-agent LLM deployments, calibrated against real API runs (OpenAI/Anthropic). It models perturbations (MAU, cache hit rate, provider rates) and supports self-host vs. API comparisons. **Method:** Uses character-based token heuristics (±10% accuracy), empirically derived multipliers (e.g., FedRAMP High × active-active = ×2.60), and a flat self-host cost model. Workloads are represented as JSON with editable parameters. **Results:** Provides cost estimates with ±20% accuracy vs. production, including reservation savings and perturbation analysis. **Impact:** Advances practical LLM deployment planning by enabling data-driven procurement decisions, though limited to high-level modeling.
 
-[→ Read full article](https://arxiv.org/abs/2607.01276)
-
----
-
-### [SLFS: Serverless Distributed File System with Fine-Grained Elasticity](https://arxiv.org/abs/2607.01486)
-
-<small>**cs.DC updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `serverless` `distributed-file-system` `elasticity` `cold-start`</small>
-
-**Overview:** SLFS is the first distributed file system leveraging serverless functions for both data and metadata operations to address fine-grained load fluctuations in large-scale storage systems. **Method:** SLFS implements file services atop key-value stores, using a multi-threaded, short-lived server design to mitigate cold starts while maintaining low cost. A policy-enforcing coordinator dynamically maps files to function instances, scales elastically, and controls function lifetimes for cost-performance balance. **Results:** SLFS reduces cold starts by 580× compared to base serverless designs and outperforms λFS, EFS, and Ceph at up to 63%, 68%, and 63% lower cost, respectively. **Impact:** SLFS demonstrates the feasibility of serverless file systems for fine-grained elasticity, advancing research in cost-efficient, scalable storage architectures.
-
-[→ Read full article](https://arxiv.org/abs/2607.01486)
+[→ Read full article](https://calc.ajinkya.ai/)
 
 ---
 
-### [PAIR-Bench: Progressive and Adaptive Benchmark for LLM Code Improvement](https://arxiv.org/abs/2607.01360)
+### [Microsoft’s experimental Copilot OS (Aion) explores agentic AI-driven desktop UX](https://www.windowscentral.com/microsoft/windows-11/microsoft-copilot-os-revealed-in-leaked-video-lightweight-windows-os-exploration-features-new-desktop-ui-built-entirely-around-copilot-and-agentic-ai)
 
-<small>**cs.SE updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `code-generation` `benchmark-design` `program-repair` `LLM-evaluation`</small>
+<small>**Hacker News - Newest: "AI"** &nbsp;·&nbsp; 2026-07-04 23:50:45 &nbsp;·&nbsp; `agentic-ai` `windows-os` `copilot-integration` `ui-innovation`</small>
 
-**Overview:** PAIR-Bench introduces a progressive benchmark for evaluating LLM-driven code improvement, addressing limitations of binary functional correctness metrics. It focuses on feedback-guided refinement trajectories rather than final pass/fail outcomes. **Method:** The benchmark employs progressive hinting with two controls: failure-region control (grouping failing tests into scenarios) and hint-depth control (adjusting repair-relevant information from coarse symptoms to implementation-level guidance). **Results:** PAIR-Bench enables finer-grained assessment of repair capabilities, including targeted failure resolution, generalization beyond hints, and preservation of correct behavior. **Impact:** Advances LLM evaluation in code generation by providing nuanced insights into refinement processes, highlighting open questions about optimal feedback strategies and generalization limits.
+![Microsoft’s experimental Copilot OS (Aion) explores agentic AI-driven desktop UX](https://cdn.mos.cms.futurecdn.net/E6sdJDERh9uyUYNHb6yjEn-2560-80.jpg)
 
-[→ Read full article](https://arxiv.org/abs/2607.01360)
+**Overview:** A leaked 2024 video reveals Microsoft’s experimental "Copilot OS" (codenamed Aion), a lightweight Windows derivative (Win3) built around agentic AI with Copilot at its core. The OS explores a desktop UI where Copilot powers a new Start menu and Taskbar with "Spaces" for app/site grouping, but runs only web apps (leveraging Windows 365 for legacy support). **Method:** Aion uses a stripped-down Windows codebase (Win3) optimized for faster updates, battery life, and security by excluding legacy Win32 apps. The UI mimics traditional desktop elements but is architected for AI-first interactions, with Copilot as the central interface. **Results:** The video demonstrates a functional prototype with Taskbar "Spaces" and AI-driven Start menu, but it remains unclear if this is a hackathon project or a product roadmap. Microsoft’s recent "Project Solara" suggests evolution toward agentic OS capabilities. **Impact:** While not a shipping product, Aion highlights Microsoft’s exploration of AI-native desktop experiences and may influence future Windows 11 features. Open questions remain about user adoption and Copilot’s controversial role in the ecosystem.
 
----
-
-### [GPUAlert: Reliable Failure Monitoring for GPU Training Jobs](https://arxiv.org/abs/2607.01409)
-
-<small>**cs.SE updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `GPU-training` `failure-detection` `command-line-tools` `log-analysis`</small>
-
-**Overview:** GPUAlert is a command-line wrapper that monitors GPU training jobs, addressing the problem of delayed failure detection in production clusters. **Method:** It implements three reliability primitives: pre-launch log guarantees, notifier isolation, and non-silent artifact budget. An ordered-rule classifier analyzes logs to identify 15 failure classes with 0.997 macro-F1. **Results:** Wrapper overhead is ~3ms per job; it preserves child exit codes even during SMTP failures and outperforms keyword matching (0.830 F1) and exit-code inspection (0.133 F1). **Impact:** Advances operational reliability in ML systems by enabling timely, detailed failure notifications without modifying training scripts.
-
-[→ Read full article](https://arxiv.org/abs/2607.01409)
+[→ Read full article](https://www.windowscentral.com/microsoft/windows-11/microsoft-copilot-os-revealed-in-leaked-video-lightweight-windows-os-exploration-features-new-desktop-ui-built-entirely-around-copilot-and-agentic-ai)
 
 ---
 
-### [Intra-Inter Riemannian Manifold Attention Network for EEG-Based Stress Detection](https://arxiv.org/abs/2607.01279)
+## Cybersecurity
 
-<small>**cs.LG updates on arXiv.org** &nbsp;·&nbsp; 2026-07-03 05:00:00 &nbsp;·&nbsp; `EEG` `stress-detection` `Riemannian-manifold` `attention-mechanism`</small>
+### [Apple’s Hide My Email Service Leaks Real Addresses Due to Unpatched Vulnerability](https://www.wired.com/story/security-roundup-apples-hide-my-email-service-fails-to-hide-your-email/)
 
-**Overview:** Proposes a novel EEG-based stress detection model addressing subject-dependent and frequency-specific challenges. **Method:** Constructs spatial covariance matrices at each frequency point, maps them to SPD tangent space, and uses frequency cluster aggregation and intra-inter slice attention to preserve temporal coherence. **Results:** Achieves up to 82.78% balanced accuracy with 1.60M parameters and 31.95M FLOPs, outperforming five state-of-the-art baselines on three datasets. **Impact:** Advances interpretable and efficient EEG-based cognitive state decoding, with potential applications in mental health monitoring.
+<small>**Hacker News - Newest: "security"** &nbsp;·&nbsp; 2026-07-04 18:01:39 &nbsp;·&nbsp; `CVE-unknown` `privacy-leak` `email-forwarding` `security-research`</small>
 
-[→ Read full article](https://arxiv.org/abs/2607.01279)
+![Apple’s Hide My Email Service Leaks Real Addresses Due to Unpatched Vulnerability](https://media.wired.com/photos/6a459c14043fba997ea26852/191:100/w_1280,c_limit/security_roudnup_GettyImages-1157988186.jpg)
+
+**Overview:** A critical privacy flaw in Apple’s Hide My Email service, discovered in June 2025, allows attackers to uncover users’ real email addresses despite the service’s intended anonymization. The vulnerability has persisted for over a year despite Apple’s claims of remediation. **Method:** The attack vector involves exploiting weaknesses in the email forwarding mechanism of @icloud.com aliases to trace them back to the original account. Security researcher Tyler Murphy reported the issue to Apple in 2024, but testing in 2025 confirmed exploitability. Apple acknowledged the issue but has not released a patch. **Results:** In controlled tests, 100% of tested Hide My Email addresses were exploitable. The flaw undermines the service’s core privacy promise and exposes users to targeted tracking or phishing. **Impact:** This vulnerability erodes trust in privacy-preserving tools and highlights risks in relying on proprietary anonymization systems. Open questions include the full scope of affected users and Apple’s timeline for a fix.
+
+[→ Read full article](https://www.wired.com/story/security-roundup-apples-hide-my-email-service-fails-to-hide-your-email/)
+
+---
+
+### [Alibaba Bans Claude Code Over Hidden Tracking Code for Chinese Users](https://www.scmp.com/tech/big-tech/article/3359375/alibaba-bans-staff-using-claude-code-over-anthropic-spyware-concerns)
+
+<small>**Hacker News - Newest: "security"** &nbsp;·&nbsp; 2026-07-04 07:02:29 &nbsp;·&nbsp; `spyware` `code-agent` `supply-chain-risk` `enterprise-policy`</small>
+
+![Alibaba Bans Claude Code Over Hidden Tracking Code for Chinese Users](https://cdn.i-scmp.com/sites/default/files/styles/og_image_scmp_generic/public/d8/images/canvas/2026/07/03/4b7ecbd0-179f-44fa-bd51-278c76e2a29b_88a762fd.jpg?itok=wcisl7Sd&v=1783088147)
+
+**Overview:** Alibaba Group banned internal use of Anthropic’s Claude Code after discovering hidden tracking code that could identify Chinese users or affiliates, labeling it a high-risk software vulnerability. The ban takes effect July 10, 2026. **Method:** Anthropic embedded code in Claude Code to detect whether users were in China or associated with Chinese AI labs, allegedly to comply with US export controls. Security researchers exposed this practice via public forums (Reddit, GitHub). The tracking mechanism operated covertly, raising concerns about data exfiltration and compliance with Chinese data sovereignty laws. **Results:** Alibaba’s internal notice cited "back-door risks" and "security vulnerabilities," prompting a company-wide prohibition. The incident has sparked broader backlash in China regarding US AI tooling and data privacy. **Impact:** Highlights risks of proprietary AI coding agents in regulated environments and the need for transparent supply chains. Open questions include the legality of such tracking under Chinese law and Anthropic’s response to mitigate reputational damage.
+
+[→ Read full article](https://www.scmp.com/tech/big-tech/article/3359375/alibaba-bans-staff-using-claude-code-over-anthropic-spyware-concerns)
+
+---
+
+### [PHP Ecosystem Security Engineering: One Month Progress Report](https://thephp.foundation/blog/2026/06/23/one-month-of-ecosystem-security-engineering/)
+
+<small>**Hacker News - Newest: "security"** &nbsp;·&nbsp; 2026-07-04 21:57:40 &nbsp;·&nbsp; `open-source-security` `vulnerability-scanning` `PHP-ecosystem` `security-automation`</small>
+
+![PHP Ecosystem Security Engineering: One Month Progress Report](https://thephp.foundation/assets/share/2026-06-23-one-month-of-ecosystem-security-engineering.png)
+
+**Overview:** The PHP Foundation’s new Ecosystem Security Team, funded by Alpha-Omega, reports on its first month of securing the PHP open-source ecosystem. The initiative focuses on automated vulnerability scanning, maintainer support, and collaborative tooling to address security gaps in widely used Composer packages and frameworks. **Method:** The team scanned over 300 top Composer packages and major frameworks, using AI-assisted analysis and containerized environments to identify vulnerabilities. Scrutineer, a shared tool developed with other language ecosystems, was used to standardize reporting, deduplicate findings, and generate reproducible exploits. Maintainers were engaged via direct outreach, with AI models assisting in triage and fix validation. **Results:** Nearly 100 public fixes were implemented across the ecosystem, including mass fixes for GitHub Actions templates affecting 200 repositories. Report quality improved significantly, with maintainers validating findings independently using their own tools. Challenges included false positives, reproducible outputs, and complex threat modeling in PHP core. **Impact:** Advances open-source security practices by establishing a sustainable model for vulnerability disclosure and remediation in the PHP ecosystem. Open questions include long-term scalability and deeper integration with PHP core development.
+
+[→ Read full article](https://thephp.foundation/blog/2026/06/23/one-month-of-ecosystem-security-engineering/)
 
 ---
